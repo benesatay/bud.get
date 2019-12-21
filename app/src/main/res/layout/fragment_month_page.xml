@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#212121"
+    tools:context=".month_page">
+
+    <!--
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toTopOf="@+id/savingLinearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+        -->
+
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        android:scrollbarSize="1dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:verticalScrollbarPosition="left">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/month_page_linear_layout_custom_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <LinearLayout
+                android:id="@+id/savingLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_edittext_border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/savingEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="3"
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:hint="Yapmak istediğiniz birikimi giriniz"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    android:textColor="#DFFFFFFF"
+                    android:textColorHighlight="#DFFFFFFF"
+                    android:textColorHint="#DFFFFFFF"
+                    android:textColorLink="#DFFFFFFF"
+                    android:textSize="16sp"
+                    android:theme="@style/CustomEditTextStyle"
+                    tools:layout_editor_absoluteX="15dp"
+                    tools:layout_editor_absoluteY="16dp" />
+
+                <ImageButton
+                    android:id="@+id/addSavingImageButton"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/budgetLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_edittext_border"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/budgetEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="3"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:hint="Aylık bütçenizi giriniz"
+                    android:inputType="number"
+                    android:textColor="#DFFFFFFF"
+                    android:textColorHighlight="#DFFFFFFF"
+                    android:textColorHint="#DFFFFFFF"
+                    android:textColorLink="#DFFFFFFF"
+                    android:textSize="16sp"
+                    android:theme="@style/CustomEditTextStyle"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="16dp" />
+
+                <ImageButton
+                    android:id="@+id/budgetImageButton"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="10"
+                android:minHeight="400dp"
+                android:orientation="horizontal"
+                android:scrollbarSize="1dp"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/listViewLinearLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:minWidth="350dp"
+                        android:orientation="vertical"
+                        android:scrollbars="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/listViewNamelinearLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:orientation="horizontal"
+                            tools:layout_editor_absoluteY="202dp">
+
+                            <TextView
+                                android:id="@+id/paymentListName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/nunito_sans_bold"
+                                android:gravity="center"
+                                android:text="Harcama"
+                                android:textColor="#95FFFFFF"
+                                android:textStyle="bold"
+                                tools:layout_editor_absoluteX="167dp"
+                                tools:layout_editor_absoluteY="207dp" />
+
+                            <TextView
+                                android:id="@+id/paymentDateListName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="2"
+                                android:fontFamily="@font/nunito_sans_bold"
+                                android:gravity="center"
+                                android:text="Tarih"
+                                android:textColor="#95FFFFFF"
+                                android:textStyle="bold"
+                                tools:layout_editor_absoluteX="167dp"
+                                tools:layout_editor_absoluteY="207dp" />
+                        </LinearLayout>
+
+                        <ListView
+                            android:id="@+id/paymentListInDetailPage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="1dp"
+                            android:background="@drawable/custom_listview_border">
+
+                        </ListView>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/listViewAndBarChartDivider"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="?android:attr/listDivider" />
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/barchart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="25dp"
+                        android:layout_weight="1"
+                        android:minWidth="400dp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/detailsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_sans_semibold"
+                android:gravity="center"
+                android:text="Detaylar"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_llayout_border"
+                android:divider="@drawable/details_linearlayout_custom_divider"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <LinearLayout
+                    android:id="@+id/totalPaymentTextViewlinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/totalPaymentText"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Aylık Toplam Harcamanız : "
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="662dp" />
+
+                    <TextView
+                        android:id="@+id/totalPaymentInMonthTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="total payment"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="229dp"
+                        tools:layout_editor_absoluteY="661dp" />
+
+                    <ImageButton
+                        android:id="@+id/totalPaymentOnMonthDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/savingTextLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/savingText"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Birikim Girdiniz: "
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="18dp"
+                        tools:layout_editor_absoluteY="558dp" />
+
+                    <TextView
+                        android:id="@+id/savingTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="entered saving"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="199dp"
+                        tools:layout_editor_absoluteY="559dp" />
+
+                    <ImageButton
+                        android:id="@+id/depositDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/budgetTextViewLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/budgetText"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Toplam bütçe : "
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/budgetTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="total budget"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/budgetDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/balanceTextViewLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/balanceText"
+                        android:layout_width="200dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="Kalan Bütçeniz : "
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="696dp" />
+
+                    <TextView
+                        android:id="@+id/balanceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="balance"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="229dp"
+                        tools:layout_editor_absoluteY="695dp" />
+
+                    <ImageButton
+                        android:id="@+id/balanceDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

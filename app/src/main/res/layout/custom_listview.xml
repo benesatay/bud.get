@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="75dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/custom_listitem_border"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/pencilImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+        <TextView
+            android:id="@+id/paymentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:gravity="center_vertical"
+            android:text="0000000000"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/paymentDateDivider"
+            android:layout_width="1dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="@android:drawable/divider_horizontal_bright" />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="11dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:fontFamily="@font/nunito_sans_semibold"
+            android:gravity="center"
+            android:text="00/00/0000 00:00:00"
+            android:textAllCaps="false"
+            android:textColor="#909090"
+            android:textSize="11sp" />
+
+        <ImageButton
+            android:id="@+id/deletePaymentImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
