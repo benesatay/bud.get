@@ -89,11 +89,12 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteRowOfTodayPagePaymentTable(String payment, String paymentdate) {
+    public void deleteRowOfTodayPagePaymentTable(String payment, String paymentname, String paymentdate) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("" +
                 "DELETE FROM " + "paymenttable" +
                 " WHERE " + "payment" + "= '" + payment + "'" +
+                " and " + "paymentname" + "= '" + paymentname + "'" +
                 " and " + "paymentdate" + "= '" + paymentdate +
                 "'");
         db.close();

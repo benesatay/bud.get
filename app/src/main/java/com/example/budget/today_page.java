@@ -52,16 +52,9 @@ public class today_page extends Fragment {
 
     ArrayList<PaymentDataOfTodayPage> paymentListOfTodayPage;
 
-    List<String> paymentArrListasMonthly = new ArrayList<String>();
-
-    //List<String> dateArrList = new ArrayList<String>();
-    List<String> paymentNameList = new ArrayList<String>();
-    List<String> paymentNameListasMonthly = new ArrayList<String>();
-
     public TextView todaysTotalPaymentTextView;
     public ListView paymentListView;
     public EditText paymentEditText;
-
 
     public TextView currencyOfDTP;
 
@@ -105,7 +98,6 @@ public class today_page extends Fragment {
         paymentListView.setAdapter(customAdapter);
 
         final Date todaysDate = new Date();
-
         String oldDate;
 
         int differenceOfDates;
@@ -117,7 +109,6 @@ public class today_page extends Fragment {
             differenceOfYears = 0;
         } else {
             oldDate = paymentListOfTodayPage.get(0).getPaymentDate();
-
             differenceOfDates = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2)) - Integer.valueOf(oldDate.substring(0,2));
             differenceOfMonths = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(3,5)) - Integer.valueOf(oldDate.substring(3,5));
             differenceOfYears = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(6,10)) - Integer.valueOf(oldDate.substring(6,10));
@@ -127,11 +118,9 @@ public class today_page extends Fragment {
         try {
             if (differenceOfDates > 0 || differenceOfMonths > 0 || differenceOfYears > 0) {
 
-                /*
                 //silinmeden önce tekrar gönderilerek oradaki veriler korunur
                 String jsonTotalPayment = gson.toJson(todaysTotalPaymentTextView.getText().toString());
                 editor.putString("jsonTotalPayment", jsonTotalPayment);
-                */
                 
                 String lastPaymentDateToJson = gson.toJson(paymentListOfTodayPage.get(0).getPaymentDate());
                 editor.putString("lastPaymentDateToJson", lastPaymentDateToJson);
@@ -152,14 +141,11 @@ public class today_page extends Fragment {
             paymentListView.setBackgroundColor(212121);
         }
 
-
         FloatingActionButton addPaymentFAB = view.findViewById(R.id.addPaymentFAB);
-
         addPaymentFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addPayment();
-                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Added), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -184,27 +170,30 @@ public class today_page extends Fragment {
     }
 
     public void addPayment() {
-
         BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
-
-        SharedPreferences settings = getActivity().getSharedPreferences("SQL", 0);
-        SharedPreferences.Editor settingsEditor = settings.edit();
-
-        final CustomAdapter customAdapter = new CustomAdapter(paymentListOfTodayPage);
+        SharedPreferences sqlSharedPreferences = getActivity().getSharedPreferences("SQL", 0);
+        SharedPreferences.Editor dbEditor = sqlSharedPreferences.edit();
 
         final SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
+
         final Gson gson = new Gson();
 
-        final Date todaysDate = new Date();
+        final CustomAdapter customAdapter = new CustomAdapter(paymentListOfTodayPage);
 
-        Date todaysDateInButton = new Date();
-        String oldDateInButton;
+        Date todaysDate = new Date();
         int differenceOfDates;
-
         if(paymentListOfTodayPage.isEmpty()) {
-            differenceOfDates = 0;
+            //we get last payment date to calculate differenceofdates from monthlypaymentlist
+            BudgetDatabaseHelper mBudgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
+            ArrayList<PaymentDataOfMonthPage> monthlypaymentList = (ArrayList<PaymentDataOfMonthPage>) mBudgetDatabaseHelper.getAllMonthPagePaymentData();
+            try {
+                differenceOfDates = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2)) - Integer.valueOf(monthlypaymentList.get(0).getMpaymentDate().substring(0,2));
+            } catch (NullPointerException e) {
+                differenceOfDates = 0;
+            }
         } else {
+            String oldDateInButton;
             oldDateInButton = paymentListOfTodayPage.get(0).getPaymentDate();
             differenceOfDates = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2)) - Integer.valueOf(oldDateInButton.substring(0,2));
         }
@@ -213,103 +202,95 @@ public class today_page extends Fragment {
         String forWhatStr = getString(R.string.Spent_For_What);
 
         //listview will be cleared when new payment is added in new day
-        try {
-            if (differenceOfDates > 0) {
+        if (differenceOfDates > 0) {
 
-                /*
-                //silinmeden önce tekrar gönderilerek oradaki veriler korunur
-                String jsonTotalPayment = gson.toJson(todaysTotalPaymentTextView.getText().toString());
-                editor.putString("jsonTotalPayment", jsonTotalPayment);
+            try {
+                    //silinmeden önce tekrar gönderilerek oradaki veriler korunur
+                    String jsonTotalPayment = gson.toJson(todaysTotalPaymentTextView.getText().toString());
+                    editor.putString("jsonTotalPayment", jsonTotalPayment);
 
-                String lastPaymentDateToJson = gson.toJson(dateArrList.get(0));
-                editor.putString("lastPaymentDateToJson", lastPaymentDateToJson);
+                    String lastPaymentDateToJson = gson.toJson(paymentListOfTodayPage.get(0).getPaymentDate());
+                    editor.putString("lastPaymentDateToJson", lastPaymentDateToJson);
 
-                editor.commit();
-                 */
+                    editor.commit();
 
-                paymentListOfTodayPage.clear();
-                //add method that apply to delete from database
-                budgetDatabaseHelper.clearTodayPagePaymentTable();
-            } else {
-                budgetDatabaseHelper.insertPaymentOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDateInButton));
-                budgetDatabaseHelper.insertPaymentOfProfilePage(enteredPayment, forWhatStr);
+                    paymentListOfTodayPage.clear();
+                    budgetDatabaseHelper.clearTodayPagePaymentTable();
+                } catch (NullPointerException e) {
+                    System.out.println("null in time controlling");
+                } catch (IndexOutOfBoundsException e) {
+                    paymentListOfTodayPage.clear();
 
-                settingsEditor.commit();
+                    budgetDatabaseHelper.insertPaymentOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate));
+                    budgetDatabaseHelper.insertPaymentOfProfilePage(enteredPayment, forWhatStr);
+                    dbEditor.commit();
 
-                paymentListOfTodayPage.add(0, new PaymentDataOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDateInButton)));
+                }
 
-            }
-
-            //ArrayList will cleared in the new day
-            //but if we do not set to payment listview, listview shows old data.
-            //so we must set to payment listview when a new day is came.
-            paymentListView.setAdapter(customAdapter);
-
-        } catch (NullPointerException e) {
-            System.out.println("null in time controlling");
-        } catch (IndexOutOfBoundsException e) {
-
-            paymentListOfTodayPage.clear();
-
-            budgetDatabaseHelper.insertPaymentOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDateInButton));
+            paymentListOfTodayPage.add(0, new PaymentDataOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate)));
+            budgetDatabaseHelper.insertPaymentOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate));
             budgetDatabaseHelper.insertPaymentOfProfilePage(enteredPayment, forWhatStr);
-
-            settingsEditor.commit();
+            dbEditor.commit();
 
             paymentListView.setAdapter(customAdapter);
+            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Added), Toast.LENGTH_SHORT).show();
+        } else {
+            if(enteredPayment.equals("")) {
+                AlertDialog.Builder exceptionDialog = new AlertDialog.Builder(getActivity());
+                exceptionDialog.setMessage(getString(R.string.Please_Enter_Payment));
+                exceptionDialog.setPositiveButton(getString(R.string.Close), new DialogInterface.OnClickListener() {
 
-        } catch (NumberFormatException e) {
-            final AlertDialog.Builder exceptionDialog = new AlertDialog.Builder(getActivity());
-            exceptionDialog.setMessage(getString(R.string.Please_Enter_Payment));
-            exceptionDialog.setPositiveButton(getString(R.string.Close), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            exceptionDialog.show();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                exceptionDialog.show();
+            } else {
+                paymentListOfTodayPage.add(0, new PaymentDataOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate)));
+                budgetDatabaseHelper.insertPaymentOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate));
+                budgetDatabaseHelper.insertPaymentOfProfilePage(enteredPayment, forWhatStr);
+                dbEditor.commit();
+
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Added), Toast.LENGTH_SHORT).show();
+            }
+        }
+        //ArrayList will cleared in the new day
+        //but if we do not set to payment listview, listview shows old data.
+        //so we must set to payment listview when a new day is came.
+        paymentListView.setAdapter(customAdapter);
+
+        //app is recreated when the first element is added for access to wanted display in today_page, listViewNamelinearLayout will visible
+        //if we do not use if statement, the app is recreated when each element adding and this causes bad using.
+        if(paymentListOfTodayPage.size() < 2) {
+            getActivity().recreate();
         }
 
+        //total payment is calculated
         int totalPaymentOnDay = 0;
-        for(int indexofPaymentList = 0; indexofPaymentList< paymentListOfTodayPage.size(); indexofPaymentList++) {
-            if(paymentListOfTodayPage.size() <= 1) {
-                totalPaymentOnDay = Integer.valueOf(enteredPayment);
-            } else {
-                try {
-                    totalPaymentOnDay = totalPaymentOnDay + Integer.valueOf(paymentListOfTodayPage.get(indexofPaymentList).getPayment());
-
-                } catch (NumberFormatException e) {
-                    paymentListOfTodayPage.remove(indexofPaymentList);
-
-                    final AlertDialog.Builder exceptionDialog = new AlertDialog.Builder(getActivity());
-                    exceptionDialog.setMessage(getString(R.string.Please_Enter_Payment));
-                    exceptionDialog.setPositiveButton(getString(R.string.Close), new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    exceptionDialog.show();
-                }
-            }
-
-            if (totalPaymentOnDay == 0) {
-                todaysTotalPaymentTextView.setText("");
-            } else {
-                todaysTotalPaymentTextView.setText(String.valueOf(totalPaymentOnDay));
-            }
+        for(int indexofPaymentList = 0; indexofPaymentList < paymentListOfTodayPage.size(); indexofPaymentList++) {
+            totalPaymentOnDay = totalPaymentOnDay + Integer.valueOf(paymentListOfTodayPage.get(indexofPaymentList).getPayment());
         }
-        todaysTotalPaymentTextView.setText(String.valueOf(totalPaymentOnDay));
 
+        //totalPayment is displayed
+        if (totalPaymentOnDay == 0) {
+            todaysTotalPaymentTextView.setText("");
+        } else {
+            todaysTotalPaymentTextView.setText(String.valueOf(totalPaymentOnDay));
+        }
+
+        //totalPayment is sent to json to share with month_page
         String jsonTotalPayment = gson.toJson(todaysTotalPaymentTextView.getText().toString());
         editor.putString("jsonTotalPayment", jsonTotalPayment);
 
-        String lastPaymentDateToJson = gson.toJson(paymentListOfTodayPage.get(0).getPaymentDate());
-        editor.putString("lastPaymentDateToJson", lastPaymentDateToJson);
-
+        //totalPayment date is sent to json to share with month_page
+        try {
+            String lastPaymentDateToJson = gson.toJson(paymentListOfTodayPage.get(0).getPaymentDate());
+            editor.putString("lastPaymentDateToJson", lastPaymentDateToJson);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("lastPaymentDateToJson is 0");
+        }
         editor.commit();
-
     }
 
     public void deleteTotalPaymentOnDay() {
@@ -466,7 +447,7 @@ public class today_page extends Fragment {
                             BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
 
                             paymentListOfTodayPage.remove(position);
-                            budgetDatabaseHelper.deleteRowOfTodayPagePaymentTable(paymentTransfering, paymentDateTransfering);
+                            budgetDatabaseHelper.deleteRowOfTodayPagePaymentTable(paymentTransfering, paymentNameTransfering, paymentDateTransfering);
                             budgetDatabaseHelper.deleteRowOfProfilePagePaymentTable(paymentTransfering, paymentNameTransfering);
 
                             paymentListOfTodayPage.add(position, new PaymentDataOfTodayPage(paymentTransfering, textViewInAlertDialog.getText().toString(), paymentDateTransfering));
@@ -528,7 +509,7 @@ public class today_page extends Fragment {
                             }
 
                             BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
-                            budgetDatabaseHelper.deleteRowOfTodayPagePaymentTable(paymentListOfTodayPage.get(position).getPayment(), paymentListOfTodayPage.get(position).getPaymentDate());
+                            budgetDatabaseHelper.deleteRowOfTodayPagePaymentTable(paymentListOfTodayPage.get(position).getPayment(), paymentListOfTodayPage.get(position).getPaymentName(), paymentListOfTodayPage.get(position).getPaymentDate());
 
                             paymentListOfTodayPage.remove(position);
                             paymentListOfTodayPage.remove(null);
