@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Language">Dil</string>
+    <string name="budget_edit_text">Aylık bütçenizi giriniz</string>
+    <string name="deposit_edit_text">Birikim hedefinizi giriniz</string>
+    <string name="detail_text">Detaylar</string>
+    <string name="entered_deposit">Birikim Girdiniz</string>
+    <string name="payment">Harcama</string>
+    <string name="payment_date">Tarih</string>
+    <string name="payment_edit_text">Toplam harcamanızı giriniz</string>
+    <string name="balance">Kalan Bütçeniz</string>
+    <string name="settings_toolbar">Ayarlar</string>
+    <string name="total_budget">Toplam Bütçe</string>
+    <string name="total_payment_daily">Günlük Toplam Harcamanız</string>
+    <string name="total_payment_monthly">Aylık Toplam Harcamanız</string>
+    <string name="Account_Activities">Hesap Hareketleri</string>
+    <string name="Bar_Chart_Color_Name">Harcamalar</string>
+    <string name="Month">Aylık</string>
+    <string name="Monthly_Payment_Chart">Aylık Harcama Grafiği</string>
+    <string name="Payment_Type_Chart">Harcama Tipi Grafiği</string>
+    <string name="Profile">Profil</string>
+    <string name="Since_Date">Tarihinden İtibaren</string>
+    <string name="Spent_For_What">Ne İçin Harcandım?</string>
+    <string name="Today">Günlük</string>
+    <string name="Total_Deposit">Toplam Birikim</string>
+    <string name="Total_Payment">Toplam Harcama</string>
+    <string name="Payment_Types">Harcama Türleri</string>
+    <string name="Enter_Payment_Name">Harcama adını giriniz</string>
+    <string name="Add">Ekle</string>
+    <string name="Added">Eklendi</string>
+    <string name="Cancel">İptal</string>
+    <string name="Close">Kapat</string>
+    <string name="Delete">Sil</string>
+    <string name="Deleted">Silindi</string>
+    <string name="Please_Enter_Budget">Lütfen Bütçenizi Giriniz</string>
+    <string name="Please_Enter_Deposit_Target">Lütfen Birikim Hedefi Giriniz</string>
+    <string name="Please_Enter_Payment">Lütfen Harcama Giriniz</string>
+    <string name="Save">Kaydet</string>
+    <string name="Saved">Kaydedildi</string>
+    <string name="Ok">Tamam</string>
+    <string name="Currency_Type">Para birimi seçiniz</string>
+    <string name="Language_Changed">Dil Türkçe olarak Ayarlandı</string>
+    <string name="UNDO_TEXT">Değişiklik Geri Alındı</string>
+</resources>

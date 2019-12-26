@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -62,11 +66,24 @@ public class month_page extends Fragment {
 
     public BarChart barChart;
 
+    public String currency;
+
+    public TextView currencyOfMTP;
+    public TextView currencyOfED;
+    public TextView currencyOfTB;
+    public TextView currencyOfB;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_month_page, container, false);
+
+        Toolbar toolbar = view.findViewById(R.id.mToolbar);
+        toolbar.setTitle("");
+
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         BudgetDatabaseHelper mBudgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
         SharedPreferences settings = getActivity().getSharedPreferences("SQL", 0);
@@ -85,6 +102,11 @@ public class month_page extends Fragment {
         savingTextView = view.findViewById(R.id.savingTextView);
         balanceTextView = view.findViewById(R.id.balanceTextView);
         totalPaymentInMonthTextView = view.findViewById(R.id.totalPaymentInMonthTextView);
+
+        currencyOfMTP = view.findViewById(R.id.currencyOfMTP);
+        currencyOfED = view.findViewById(R.id.currencyOfED);
+        currencyOfTB = view.findViewById(R.id.currencyOfTB);
+        currencyOfB = view.findViewById(R.id.currencyOfB);
 
         ImageButton addSavingImageButton = view.findViewById(R.id.addSavingImageButton);
         ImageButton budgetImageButton = view.findViewById(R.id.budgetImageButton);
@@ -115,6 +137,26 @@ public class month_page extends Fragment {
                 addBudget();
             }
         });
+
+        //done button in keyboard
+        savingEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    addSaving();
+                }
+                return false;
+            }});
+
+        //done button in keyboard
+        budgetEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    addBudget();
+                }
+                return false;
+            }});
 
         depositDeleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,8 +227,21 @@ public class month_page extends Fragment {
         } catch (NullPointerException e) {
             System.out.println("somethings are null in detailpage");
         }
-    }
 
+
+        String currencyFromJson = sharedPref.getString("currencyToJson", null);
+        Type typeCurrency = new TypeToken<String>() {}.getType();
+        try {
+            currencyOfB.setText(String.valueOf(gson.fromJson(currencyFromJson, typeCurrency)));
+            currencyOfTB.setText(String.valueOf(gson.fromJson(currencyFromJson, typeCurrency)));
+            currencyOfED.setText(String.valueOf(gson.fromJson(currencyFromJson, typeCurrency)));
+            currencyOfMTP.setText(String.valueOf(gson.fromJson(currencyFromJson, typeCurrency)));
+
+            currency = gson.fromJson(currencyFromJson, typeCurrency);
+        } catch (NullPointerException e) {
+            currency = "";
+        }
+    }
 
     public void generatePaymentListAndPaymentDateListAndTotalPayment() {
 
@@ -320,12 +375,12 @@ public class month_page extends Fragment {
 
         try {
             savingTextView.setText(enteredDeposit);
-            Toast.makeText(getActivity().getApplicationContext(), "Eklendi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Added), Toast.LENGTH_SHORT).show();
 
         } catch (NumberFormatException e) {
             AlertDialog.Builder exceptionDialog = new AlertDialog.Builder(getActivity());
-            exceptionDialog.setMessage("Lütfen yapmak istediğiniz birikimi giriniz!");
-            exceptionDialog.setPositiveButton("Tamam", new DialogInterface.OnClickListener() {
+            exceptionDialog.setMessage(getString(R.string.Please_Enter_Deposit_Target));
+            exceptionDialog.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -353,8 +408,8 @@ public class month_page extends Fragment {
             //balanceTextView.setText(enteredBudget);
         } catch (NumberFormatException e) {
             final AlertDialog.Builder exceptionDialog = new AlertDialog.Builder(getActivity());
-            exceptionDialog.setMessage("Lütfen bütçenizi giriniz!");
-            exceptionDialog.setPositiveButton("Kapat", new DialogInterface.OnClickListener() {
+            exceptionDialog.setMessage(getString(R.string.Please_Enter_Budget));
+            exceptionDialog.setPositiveButton(getString(R.string.Close), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -376,7 +431,7 @@ public class month_page extends Fragment {
         balanceTextView.setText(String.valueOf(balance));
         budgetTextView.setText(String.valueOf(balance));
 
-        Toast.makeText(getActivity().getApplicationContext(), "Eklendi", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Added), Toast.LENGTH_SHORT).show();
 
         String totalPaymentAfterAddingBudget = totalPaymentInMonthTextView.getText().toString();
 
@@ -406,8 +461,8 @@ public class month_page extends Fragment {
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
         deleteDialog.setMessage(savingTextView.getText().toString());
 
-        deleteDialog.setNegativeButton("İptal", null);
-        deleteDialog.setPositiveButton("Sil", new AlertDialog.OnClickListener() {
+        deleteDialog.setNegativeButton(getString(R.string.Cancel), null);
+        deleteDialog.setPositiveButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -421,7 +476,7 @@ public class month_page extends Fragment {
 
                 dialog.dismiss();
 
-                Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
             }
         });
         deleteDialog.show();
@@ -438,8 +493,8 @@ public class month_page extends Fragment {
 
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
         deleteDialog.setMessage(totalPaymentInMonthTextView.getText().toString());
-        deleteDialog.setNegativeButton("İptal", null);
-        deleteDialog.setPositiveButton("Sil", new AlertDialog.OnClickListener() {
+        deleteDialog.setNegativeButton(getString(R.string.Cancel), null);
+        deleteDialog.setPositiveButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -467,7 +522,7 @@ public class month_page extends Fragment {
 
                 dialog.dismiss();
 
-                Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
             }
         });
         deleteDialog.show();
@@ -481,8 +536,8 @@ public class month_page extends Fragment {
 
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
         deleteDialog.setMessage(budgetTextView.getText().toString());
-        deleteDialog.setNegativeButton("İptal", null);
-        deleteDialog.setPositiveButton("Sil", new AlertDialog.OnClickListener() {
+        deleteDialog.setNegativeButton(getString(R.string.Cancel), null);
+        deleteDialog.setPositiveButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -500,7 +555,7 @@ public class month_page extends Fragment {
                 budgetArrList.clear();
 
                 dialog.dismiss();
-                Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
             }
         });
         deleteDialog.show();
@@ -515,8 +570,8 @@ public class month_page extends Fragment {
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
         deleteDialog.setMessage(balanceTextView.getText().toString());
 
-        deleteDialog.setNegativeButton("İptal", null);
-        deleteDialog.setPositiveButton("Sil", new AlertDialog.OnClickListener() {
+        deleteDialog.setNegativeButton(getString(R.string.Cancel), null);
+        deleteDialog.setPositiveButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -534,7 +589,7 @@ public class month_page extends Fragment {
                 budgetArrList.clear();
 
                 dialog.dismiss();
-                Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
             }
         });
         deleteDialog.show();
@@ -576,7 +631,7 @@ public class month_page extends Fragment {
         }
 
         try {
-            BarDataSet bardataset = new BarDataSet(barEntries, "Harcamalar");
+            BarDataSet bardataset = new BarDataSet(barEntries, getString(R.string.Bar_Chart_Color_Name));
             BarData bardata = new BarData(barEntryDate, bardataset);
             bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
             bardataset.setBarSpacePercent(1f);
@@ -589,7 +644,7 @@ public class month_page extends Fragment {
         }
 
         barChart.animateY(5000);
-        barChart.setDescription("Aylık Harcama Grafiği");
+        barChart.setDescription(getString(R.string.Monthly_Payment_Chart));
     }
 
     final class CustomAdapter extends BaseAdapter {
@@ -631,12 +686,15 @@ public class month_page extends Fragment {
             //dates of payments are showed in Listview
             TextView dateTextView = convertView.findViewById(R.id.dateTextView);
             //delete button in the list row
+            TextView currencyTextView = convertView.findViewById(R.id.currencyTextView);
+
             ImageButton deletePaymentImageButton = convertView.findViewById(R.id.deletePaymentImageButton);
             ImageButton pencilImageButton = convertView.findViewById(R.id.pencilImageButton);
 
             //ı dont use payment name in detail page so ı made invisible it.
             pencilImageButton.setVisibility(View.INVISIBLE);
 
+            currencyTextView.setText(currency);
             totalPaymentOnDayTextView.setText(String.valueOf(monthlypaymentList.get(position).getMpayment()));
             dateTextView.setText(String.valueOf(monthlypaymentList.get(position).getMpaymentDate()));
 
@@ -651,8 +709,8 @@ public class month_page extends Fragment {
                     AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
                     deleteDialog.setMessage(String.valueOf(monthlypaymentList.get(position).getMpayment()));
 
-                    deleteDialog.setNegativeButton("İptal", null);
-                    deleteDialog.setPositiveButton("Sil", new AlertDialog.OnClickListener() {
+                    deleteDialog.setNegativeButton(getString(R.string.Cancel), null);
+                    deleteDialog.setPositiveButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -680,7 +738,7 @@ public class month_page extends Fragment {
 
                             dialog.dismiss();
 
-                            Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
                         }
                     });
                     deleteDialog.show();

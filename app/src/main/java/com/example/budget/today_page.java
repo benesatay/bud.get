@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -20,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,6 +35,9 @@ import java.util.List;
 
 
 public class today_page extends Fragment {
+
+    public static final String CURRENCY = "currency";
+
 
     /*
     // This hides the android keyboard
@@ -55,6 +62,9 @@ public class today_page extends Fragment {
     public ListView paymentListView;
     public EditText paymentEditText;
 
+
+    public TextView currencyOfDTP;
+
     SimpleDateFormat todaysDateFormatWithHour = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Override
@@ -64,11 +74,14 @@ public class today_page extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_today_page, container, false);
 
-        Toolbar toolbar = view.findViewById(R.id.profileToolbar);
+        //when keyboard is opened, linrarlayout that consist edittext and floatactionbutton goes to up and be visible.
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        Toolbar toolbar = view.findViewById(R.id.tToolbar);
         toolbar.setTitle("bud-get");
 
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final SharedPreferences sharedPref = this.getActivity().getPreferences(Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
@@ -78,12 +91,12 @@ public class today_page extends Fragment {
         paymentListOfTodayPage = (ArrayList<PaymentDataOfTodayPage>) budgetDatabaseHelper.getAllTodayPagePaymentData();
         final CustomAdapter customAdapter = new CustomAdapter(paymentListOfTodayPage);
 
-
         paymentEditText = view.findViewById(R.id.totalPaymentEditText);
         paymentListView = view.findViewById(R.id.paymentList);
         todaysTotalPaymentTextView = view.findViewById(R.id.todaysTotalPaymentTextView);
 
-        ImageButton addPaymentImageButton = view.findViewById(R.id.addPaymentImageButton);
+        currencyOfDTP = view.findViewById(R.id.currencyOfDTP);
+
         ImageButton totalPaymentOnDayDeleteImageButton = view.findViewById(R.id.totalPaymentOnDayDeleteImageButton);
 
         //data got from json
@@ -125,18 +138,11 @@ public class today_page extends Fragment {
 
                 editor.commit();
 
-
                 paymentListOfTodayPage.clear();
-                //add method that apply to delete from database
                 budgetDatabaseHelper.clearTodayPagePaymentTable();
             }
         } catch (IndexOutOfBoundsException e) {
             paymentListOfTodayPage.remove(null);
-            /*
-            paymentArrList.remove(null);
-            paymentNameList.remove(null);
-            dateArrList.remove(null);
-             */
         }
 
         //if paymentlist is empty, textviews that called "harcama" and "tarih" are invisible and paymentlist backgroundcolor is same with main screen backgrouncolor.
@@ -146,10 +152,14 @@ public class today_page extends Fragment {
             paymentListView.setBackgroundColor(212121);
         }
 
-        addPaymentImageButton.setOnClickListener(new View.OnClickListener() {
+
+        FloatingActionButton addPaymentFAB = view.findViewById(R.id.addPaymentFAB);
+
+        addPaymentFAB.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void  onClick(View view) {
+            public void onClick(View v) {
                 addPayment();
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Added), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -160,9 +170,18 @@ public class today_page extends Fragment {
             }
         });
 
+        //done button in keyboard
+        paymentEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    addPayment();
+                }
+                return false;
+            }});
+
         return view;
     }
-
 
     public void addPayment() {
 
@@ -191,7 +210,7 @@ public class today_page extends Fragment {
         }
 
         String enteredPayment = paymentEditText.getText().toString();
-        String forWhatStr = "Ne için harcadım?";
+        String forWhatStr = getString(R.string.Spent_For_What);
 
         //listview will be cleared when new payment is added in new day
         try {
@@ -241,8 +260,8 @@ public class today_page extends Fragment {
 
         } catch (NumberFormatException e) {
             final AlertDialog.Builder exceptionDialog = new AlertDialog.Builder(getActivity());
-            exceptionDialog.setMessage("Lütfen harcamalarınızı giriniz!");
-            exceptionDialog.setPositiveButton("Kapat", new DialogInterface.OnClickListener() {
+            exceptionDialog.setMessage(getString(R.string.Please_Enter_Payment));
+            exceptionDialog.setPositiveButton(getString(R.string.Close), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -263,8 +282,8 @@ public class today_page extends Fragment {
                     paymentListOfTodayPage.remove(indexofPaymentList);
 
                     final AlertDialog.Builder exceptionDialog = new AlertDialog.Builder(getActivity());
-                    exceptionDialog.setMessage("Lütfen harcamalarınızı giriniz!");
-                    exceptionDialog.setPositiveButton("Kapat", new DialogInterface.OnClickListener() {
+                    exceptionDialog.setMessage(getString(R.string.Please_Enter_Payment));
+                    exceptionDialog.setPositiveButton(getString(R.string.Close), new DialogInterface.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -290,6 +309,7 @@ public class today_page extends Fragment {
         editor.putString("lastPaymentDateToJson", lastPaymentDateToJson);
 
         editor.commit();
+
     }
 
     public void deleteTotalPaymentOnDay() {
@@ -306,8 +326,8 @@ public class today_page extends Fragment {
 
         AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
         deleteDialog.setMessage(todaysTotalPaymentTextView.getText().toString());
-        deleteDialog.setPositiveButton("İptal", null);
-        deleteDialog.setNegativeButton("Sil", new AlertDialog.OnClickListener() {
+        deleteDialog.setPositiveButton(getString(R.string.Cancel), null);
+        deleteDialog.setNegativeButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -327,7 +347,7 @@ public class today_page extends Fragment {
 
                 dialog.dismiss();
 
-                Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
 
                 getActivity().recreate();
             }
@@ -348,28 +368,7 @@ public class today_page extends Fragment {
             System.out.println("arr is null");
         }
 
-        /*
 
-        //this goes to pie chart that in profile_page
-        //payments are not deleted until next month and they are shown in pie chart with their names
-        String paymentsasMonthlyFromJson = sharedPref.getString("paymentsasMonthlyToJson",null);
-        Type typePaymentasMonthly = new TypeToken<ArrayList<String>>() {}.getType();
-        try {
-            paymentArrListasMonthly.addAll((Collection<? extends String>) gson.fromJson(paymentsasMonthlyFromJson,typePaymentasMonthly));
-        } catch (NullPointerException e) {
-            System.out.println("paymentArrListasMonthly is null");
-        }
-
-        //this goes to pie chart in profile_page
-        String paymentsNameasMonthlyFromJson = sharedPref.getString("paymentsNameasMonthlyToJson",null);
-        Type typePaymentsNameasMonthly = new TypeToken<ArrayList<String>>() {}.getType();
-        try {
-            paymentNameListasMonthly.addAll((Collection<? extends String>) gson.fromJson(paymentsNameasMonthlyFromJson,typePaymentsNameasMonthly));
-        } catch (NullPointerException e) {
-            System.out.println("paymentNameListasMonthly is null");
-        }
-
-         */
     }
 
     final class CustomAdapter extends BaseAdapter {
@@ -407,8 +406,18 @@ public class today_page extends Fragment {
 
             TextView paymentTextView = convertView.findViewById(R.id.paymentTextView);
             TextView dateTextView = convertView.findViewById(R.id.dateTextView);
+            TextView currencyTextView = convertView.findViewById(R.id.currencyTextView);
+
+            String currency = getActivity().getIntent().getStringExtra(CURRENCY);
+            String currencyToJson = gson.toJson(currency);
+            editor.putString("currencyToJson",currencyToJson);
+            editor.commit();
+
+            currencyOfDTP.setText(currency);
+
 
             try {
+                currencyTextView.setText(currency);
                 paymentTextView.setText(paymentListOfTodayPage.get(position).getPayment());
                 dateTextView.setText(paymentListOfTodayPage.get(position).getPaymentDate());
             } catch (IndexOutOfBoundsException e) {
@@ -437,9 +446,9 @@ public class today_page extends Fragment {
                         System.out.println("IndexOutOfBoundsException in alertdialog");
                     }
 
-                    pencilDialog.setMessage("Harcamanızın adını giriniz");
-                    pencilDialog.setNegativeButton("Kapat", null);
-                    pencilDialog.setPositiveButton("Kaydet", new AlertDialog.OnClickListener() {
+                    pencilDialog.setMessage(getString(R.string.Enter_Payment_Name));
+                    pencilDialog.setNegativeButton(getString(R.string.Close), null);
+                    pencilDialog.setPositiveButton(getString(R.string.Save), new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
@@ -466,7 +475,7 @@ public class today_page extends Fragment {
                             budgetDatabaseHelper.insertPaymentOfProfilePage(paymentTransfering, textViewInAlertDialog.getText().toString());
 
                             dialog.dismiss();
-                            Toast.makeText(getActivity().getApplicationContext(), "Kaydedildi", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                         }
                     });
                     pencilDialog.create();
@@ -500,8 +509,8 @@ public class today_page extends Fragment {
                     AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
                     deleteDialog.setMessage(String.valueOf(paymentListOfTodayPage.get(position).getPayment()));
 
-                    deleteDialog.setNegativeButton("İptal", null);
-                    deleteDialog.setPositiveButton("Sil", new AlertDialog.OnClickListener() {
+                    deleteDialog.setNegativeButton(getString(R.string.Cancel), null);
+                    deleteDialog.setPositiveButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -515,7 +524,7 @@ public class today_page extends Fragment {
                                     todaysTotalPaymentTextView.setText(String.valueOf(Integer.valueOf(totalPaymentAfterDeletingAnyPayment) - Integer.valueOf(paymentListOfTodayPage.get(position).getPayment())));
                                 }
                             } catch (NumberFormatException e) {
-                                Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
                             }
 
                             BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
@@ -536,7 +545,7 @@ public class today_page extends Fragment {
 
                             dialog.dismiss();
 
-                            Toast.makeText(getActivity().getApplicationContext(), "Silindi", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
                         }
                     });
                     deleteDialog.show();

@@ -38,6 +38,11 @@ public class profile_page extends Fragment {
 
     PieChart pieChart;
 
+    public TextView accountActivitiesText;
+
+    public String languageTestText;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,10 +51,10 @@ public class profile_page extends Fragment {
 
         pieChart = view.findViewById(R.id.piechart);
 
-        Toolbar profileToolbar = view.findViewById(R.id.profileToolbar);
-        profileToolbar.setTitle("username");
+        Toolbar profileToolbar = view.findViewById(R.id.pToolbar);
+        profileToolbar.setTitle("");
         ((AppCompatActivity)getActivity()).setSupportActionBar(profileToolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         creationDateTextView = view.findViewById(R.id.creationDateTextView);
 
@@ -167,7 +172,7 @@ public class profile_page extends Fragment {
                             profilePaymentList.add(new PaymentDataOfProfilePage(String.valueOf(sumOfSameNamelyPayment), renamedPayment));
                         }
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("fsdsdfafdsasdfafafaf");
+                        System.out.println("profilePaymentList.add(new PaymentDataOfProfilePage(String.valueOf(sumOfSameNamelyPayment), renamedPayment));\n");
                     }
                 }
             }
@@ -210,7 +215,11 @@ public class profile_page extends Fragment {
             }
         }
 
-        PieDataSet dataSet = new PieDataSet(piePaymentList, "Harcama Türleri");
+
+        PieDataSet dataSet = new PieDataSet(piePaymentList, getString(R.string.Payment_Types));
+
+
+
 
         try {
             PieData data = new PieData(piePaymentNames,dataSet);
@@ -221,7 +230,7 @@ public class profile_page extends Fragment {
             piePaymentNames.add(0,0);
         }
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        pieChart.setDescription("Harcama Türü Grafiği");
+        pieChart.setDescription(getString(R.string.Payment_Type_Chart));
         pieChart.animateXY(3000, 3000);
     }
 
@@ -242,9 +251,9 @@ public class profile_page extends Fragment {
         Type typeCreationDate = new TypeToken<String>() {}.getType();
         try {
             if (creationDateText == null) {
-                creationDateTextView.setText(gson.fromJson(creationDateFromJson,typeCreationDate) + " Tarihinden İtibaren");
+                creationDateTextView.setText(gson.fromJson(creationDateFromJson,typeCreationDate) + " @string/Since_Date");
             } else {
-                creationDateTextView.setText(creationDateText + " Tarihinden İtibaren");
+                creationDateTextView.setText(creationDateText + " @string/Since_Date");
                 String creationDateToJson = gson.toJson(creationDateText);
                 editor.putString("creationDate",creationDateToJson);
                 editor.apply();

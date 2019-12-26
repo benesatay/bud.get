@@ -4,10 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_like"
+        android:iconTint="#000000"
+        android:id="@+id/action_settings"
         android:orderInCategory="300"
-        android:title="Like"
-        android:icon="@drawable/ic_add_black_24dp"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings_black_24dp"
         app:showAsAction="ifRoom"></item>
 
 </menu>

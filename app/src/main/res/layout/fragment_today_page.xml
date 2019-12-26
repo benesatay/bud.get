@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayoutInMain"
@@ -8,204 +9,225 @@
     android:background="#212121"
     tools:context=".today_page">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/profileToolbar"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:background="#363636"
-        android:minHeight="40dp"
-        app:buttonGravity="top|bottom"
-        app:layout_constraintBottom_toTopOf="@+id/paymentLinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:maxButtonHeight="40dp"
-        app:title="bud-get"
-        app:titleTextAppearance="@style/toolbarTitleSize"
-        app:titleTextColor="#FFFFFF"/>
-
-
-    <LinearLayout
-        android:id="@+id/paymentLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/custom_edittext_border"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/listViewNamelinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileToolbar">
-
-        <EditText
-            android:id="@+id/totalPaymentEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="5"
-            android:ems="12"
-            android:fontFamily="@font/nunito_sans_semibold"
-            android:hint="Toplam harcamanızı giriniz"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            android:shadowColor="#BDBDBD"
-            android:textColor="#BDBDBD"
-            android:textColorHighlight="#BDBDBD"
-            android:textColorHint="#BDBDBD"
-            android:textColorLink="#BDBDBD"
-            android:textCursorDrawable="@android:color/background_dark"
-            android:textSize="16sp"
-            android:theme="@style/CustomEditTextStyle" />
-
-        <ImageButton
-            android:id="@+id/addPaymentImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_add_black_24dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/listViewNamelinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="1dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/listnamesAndListDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/paymentLinearLayout">
-
-        <TextView
-            android:id="@+id/paymentListName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Harcama"
-            android:textColor="#FAFAFA"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="167dp"
-            tools:layout_editor_absoluteY="207dp" />
-
-        <TextView
-            android:id="@+id/paymentDateListName"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:fontFamily="@font/nunito_sans_bold"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Tarih"
-            android:textColor="#FAFAFA"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="167dp"
-            tools:layout_editor_absoluteY="207dp" />
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/listnamesAndListDivider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="5dp"
-        android:background="#616161"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/paymentListLinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listViewNamelinearLayout" />
-
-    <LinearLayout
-        android:id="@+id/paymentListLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/totalPaymentTextViewlinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listnamesAndListDivider">
-
-        <ListView
-            android:id="@+id/paymentList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_listview_border"
-            android:scrollbarSize="4dp">
-
-        </ListView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/totalPaymentTextViewlinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/custom_edittext_border"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/paymentListLinearLayout">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/totalPaymentText"
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="@font/nunito_sans_semibold"
-            android:gravity="center_vertical"
-            android:text="Günlük Toplam Harcamanız : "
-            android:textColor="#FAFAFA"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="662dp" />
 
-        <TextView
-            android:id="@+id/todaysTotalPaymentTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nunito_sans_semibold"
-            android:gravity="center_vertical"
-            android:text="dailypayment"
-            android:textColor="#FAFAFA"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:layout_editor_absoluteX="229dp"
-            tools:layout_editor_absoluteY="661dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/totalPaymentOnDayDeleteImageButton"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_delete_black_24dp" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="#363636"
+                android:minHeight="40dp"
+                app:buttonGravity="top|bottom"
+                app:maxButtonHeight="40dp"
+                app:menu="@menu/custom_toolbar"
+                app:titleTextAppearance="@style/toolbarTitleSize"
+                app:titleTextColor="#FFFFFF" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/listViewNamelinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/paymentListName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/payment"
+                    android:textColor="#FAFAFA"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="167dp"
+                    tools:layout_editor_absoluteY="207dp" />
+
+                <TextView
+                    android:id="@+id/paymentDateListName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/nunito_sans_bold"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/payment_date"
+                    android:textColor="#FAFAFA"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="167dp"
+                    tools:layout_editor_absoluteY="207dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/paymentListLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:minHeight="500dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ListView
+                    android:id="@+id/paymentList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/custom_listview_border"
+                    android:minHeight="400dp"
+                    android:scrollbarSize="4dp"
+                    android:nestedScrollingEnabled="true">
+
+                </ListView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="595dp">
+
+                <EditText
+                    android:id="@+id/totalPaymentEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="5"
+                    android:ems="12"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:hint="@string/payment_edit_text"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:shadowColor="#BDBDBD"
+                    android:textColor="#BDBDBD"
+                    android:textColorHighlight="#BDBDBD"
+                    android:textColorHint="#BDBDBD"
+                    android:textColorLink="#BDBDBD"
+                    android:textCursorDrawable="@android:color/background_dark"
+                    android:textSize="16sp"
+                    android:theme="@style/CustomEditTextStyle"
+                    android:imeOptions="actionDone"/>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/addPaymentFAB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:tint="#00030000"
+                    app:backgroundTint="#AEEA00" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/detailsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_sans_semibold"
+                android:gravity="center"
+                android:text="@string/detail_text"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/totalPaymentTextViewlinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/custom_llayout_border"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:layout_editor_absoluteY="661dp">
+
+                <TextView
+                    android:id="@+id/totalPaymentText"
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:gravity="center_vertical"
+                    android:text="@string/total_payment_daily"
+                    android:textColor="#FAFAFA"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="662dp" />
+
+                <TextView
+                    android:id="@+id/todaysTotalPaymentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:gravity="center_vertical"
+                    android:text="dailypayment"
+                    android:textColor="#FAFAFA"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="229dp"
+                    tools:layout_editor_absoluteY="661dp" />
+
+                <TextView
+                    android:id="@+id/currencyOfDTP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:gravity="center_vertical"
+                    android:textColor="#FAFAFA"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="229dp"
+                    tools:layout_editor_absoluteY="661dp" />
+
+                <ImageButton
+                    android:id="@+id/totalPaymentOnDayDeleteImageButton"
+                    android:layout_width="70dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="top"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

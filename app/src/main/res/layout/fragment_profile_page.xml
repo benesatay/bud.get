@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,228 +8,244 @@
     android:background="#212121"
     tools:context=".profile_page">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/profileToolbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:background="#363636"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/divider3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="300dp">
 
-    <View
-        android:id="@+id/divider3"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="200dp"
-        android:layout_marginBottom="20dp"
-        android:background="#212121"
-        app:layout_constraintBottom_toTopOf="@+id/accountActivitiesText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileToolbar" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#363636"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="top"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    <LinearLayout
-        android:id="@+id/totalPaymentAllTimeLinearLayout"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="70dp"
+                android:layout_marginBottom="10dp"
+                app:srcCompat="@drawable/budgetlogo">
+
+            </androidx.appcompat.widget.AppCompatImageView>
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/pToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#363636"
+                android:minHeight="40dp"
+                android:theme="?attr/actionBarTheme"
+                app:buttonGravity="top|bottom"
+                app:layout_anchorGravity="center"
+                app:layout_collapseMode="pin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:maxButtonHeight="40dp"
+                app:menu="@menu/custom_toolbar"
+                app:titleTextAppearance="@style/toolbarTitleSize"
+                app:titleTextColor="#FFFFFF"
+                tools:layout_editor_absoluteY="25dp" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/totalSavingAllTimeLinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/creationDateTextView">
-
-        <TextView
-            android:id="@+id/totalPaymentAllTimeText"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/nunito_sans_semibold"
-            android:gravity="center_vertical"
-            android:text="toplam harcamanız : "
-            android:textColor="#4DB900"
-            android:textColorHighlight="#00BFA5"
-            android:textColorHint="#00BFA5"
-            android:textColorLink="#00BFA5"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/totalPaymentAllTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nunito_sans_semibold"
-            android:gravity="center_vertical"
-            android:text="totalpaymentalltime"
-            android:textColor="#4DB900"
-            android:textColorHighlight="#00BFA5"
-            android:textColorHint="#00BFA5"
-            android:textColorLink="#00BFA5"
-            android:textSize="16sp" />
-
-        <ImageButton
-            android:id="@+id/allTimeTotalPaymentImageButton"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_delete_black_24dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/totalSavingAllTimeLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="5dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/divider2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalPaymentAllTimeLinearLayout">
-
-        <TextView
-            android:id="@+id/totalSavingAllTimeText"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:fontFamily="@font/nunito_sans_semibold"
-            android:gravity="center_vertical"
-            android:text="toplam birikiminiz : "
-            android:textColor="#64DD17"
-            android:textColorHighlight="#00BFA5"
-            android:textColorHint="#00BFA5"
-            android:textColorLink="#00BFA5"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/totalSavingAllTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/nunito_sans_semibold"
-            android:gravity="center_vertical"
-            android:text="totalSavingAllTime"
-            android:textColor="#64DD17"
-            android:textColorHighlight="#00BFA5"
-            android:textColorHint="#00BFA5"
-            android:textColorLink="#00BFA5"
-            android:textSize="16sp" />
-
-        <ImageButton
-            android:id="@+id/allTimeTotalSavingImageButton"
-            android:layout_width="70dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:background="@null"
-            app:srcCompat="@drawable/ic_delete_black_24dp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/creationDateTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/nunito_sans_semibold"
-        android:text="... tarihinden itibaren "
-        android:textColor="#00BFA5"
-        android:textColorHighlight="#DDFFFFFF"
-        android:textColorHint="#DDFFFFFF"
-        android:textColorLink="#DDFFFFFF"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/totalPaymentAllTimeLinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:background="@android:drawable/divider_horizontal_textfield"
-        app:layout_constraintBottom_toTopOf="@+id/creationDateTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountActivitiesText" />
-
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="5dp"
-        android:background="@android:drawable/divider_horizontal_textfield"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalSavingAllTimeLinearLayout" />
-
-    <TextView
-        android:id="@+id/accountActivitiesText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        android:fontFamily="@font/nunito_sans_semibold"
-        android:text="Hesap Hareketleri"
-        android:textColor="#DDFFFFFF"
-        android:textColorHighlight="#DDFFFFFF"
-        android:textColorHint="#DDFFFFFF"
-        android:textColorLink="#DDFFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/divider3" />
-
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="300dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/accountActivitiesText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:text="@string/Account_Activities"
+                    android:textColor="#DDFFFFFF"
+                    android:textColorHighlight="#DDFFFFFF"
+                    android:textColorHint="#DDFFFFFF"
+                    android:textColorLink="#DDFFFFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="141dp" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:background="@android:drawable/divider_horizontal_textfield"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="213dp" />
+
+                <TextView
+                    android:id="@+id/creationDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:text="@string/Since_Date"
+                    android:textColor="#00BFA5"
+                    android:textColorHighlight="#DDFFFFFF"
+                    android:textColorHint="#DDFFFFFF"
+                    android:textColorLink="#DDFFFFFF"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="237dp" />
+
+                <LinearLayout
+                    android:id="@+id/totalPaymentAllTimeLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="307dp">
+
+                    <TextView
+                        android:id="@+id/totalPaymentAllTimeText"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="30dp"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="@string/Total_Payment"
+                        android:textColor="#4DB900"
+                        android:textColorHighlight="#00BFA5"
+                        android:textColorHint="#00BFA5"
+                        android:textColorLink="#00BFA5"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/totalPaymentAllTimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="totalpaymentalltime"
+                        android:textColor="#4DB900"
+                        android:textColorHighlight="#00BFA5"
+                        android:textColorHint="#00BFA5"
+                        android:textColorLink="#00BFA5"
+                        android:textSize="16sp" />
+
+                    <ImageButton
+                        android:id="@+id/allTimeTotalPaymentImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/totalSavingAllTimeLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="375dp">
+
+                    <TextView
+                        android:id="@+id/totalSavingAllTimeText"
+                        android:layout_width="150dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="30dp"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="@string/Total_Deposit"
+                        android:textColor="#64DD17"
+                        android:textColorHighlight="#00BFA5"
+                        android:textColorHint="#00BFA5"
+                        android:textColorLink="#00BFA5"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/totalSavingAllTimeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="totalSavingAllTime"
+                        android:textColor="#64DD17"
+                        android:textColorHighlight="#00BFA5"
+                        android:textColorHint="#00BFA5"
+                        android:textColorLink="#00BFA5"
+                        android:textSize="16sp" />
+
+                    <ImageButton
+                        android:id="@+id/allTimeTotalSavingImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@android:drawable/divider_horizontal_textfield"
+                    app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </LinearLayout>
+
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/piechart"
-                android:layout_width="390dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginBottom="60dp"
                 android:layout_weight="1"
-                android:background="@null" />
-        </LinearLayout>
-    </HorizontalScrollView>
+                android:background="@null"
+                android:minHeight="400dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

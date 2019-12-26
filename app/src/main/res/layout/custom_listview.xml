@@ -29,10 +29,20 @@
             android:id="@+id/paymentTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:fontFamily="@font/nunito_sans_bold"
             android:gravity="center_vertical"
             android:text="0000000000"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/currencyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:gravity="center_vertical"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 

@@ -4,19 +4,19 @@
     <item
         android:id="@+id/today"
         android:icon="@drawable/ic_today_black_24dp"
-        android:title="Today">
+        android:title="@string/Today">
     </item>
 
     <item
         android:id="@+id/month"
         android:icon="@drawable/ic_assignment_black_24dp"
-        android:title="Month">
+        android:title="@string/Month">
     </item>
 
     <item
         android:id="@+id/profile"
         android:icon="@drawable/ic_perm_identity_black_24dp"
-        android:title="Profile">
+        android:title="@string/Profile">
     </item>
 
 </menu>

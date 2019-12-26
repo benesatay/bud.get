@@ -1,3 +1,64 @@
 <resources>
-    <string name="app_name">bud-get</string>
+    <string name="app_name" translatable="false">bud-get</string>
+
+    <string name="settings_toolbar">Settings</string>
+
+    <string name="payment">Payment</string>
+    <string name="payment_date">Date</string>
+
+    <string name="payment_edit_text">Enter your payment</string>
+    <string name="deposit_edit_text">Enter deposit target</string>
+    <string name="budget_edit_text">Enter your budget</string>
+
+    <string name="total_payment_daily">Daily Total Payment</string>
+
+    <string name="detail_text">Details</string>
+
+    <string name="total_payment_monthly">Monthly Total Payment</string>
+    <string name="entered_deposit">Entered Deposit</string>
+    <string name="total_budget">Total Budget</string>
+    <string name="balance">Balance</string>
+
+    <string name="Language">Language</string>
+
+    <string name="Today">Today</string>
+    <string name="Month">Month</string>
+    <string name="Profile">Profile</string>
+    <string name="Account_Activities">Account Activities</string>
+    <string name="Since_Date">Since Date</string>
+    <string name="Total_Payment">Total Payment</string>
+    <string name="Total_Deposit">Total Deposit</string>
+    <string name="Spent_For_What">Spent For What?</string>
+
+    <string name="Payment_Type_Chart">Payment Type Chart</string>
+    <string name="Payment_Types">Payment Types</string>
+    <string name="Monthly_Payment_Chart">Monthly Payment Chart</string>
+    <string name="Bar_Chart_Color_Name">Payments</string>
+
+    <string name="Enter_Payment_Name">Enter payment name</string>
+
+    <string name="Please_Enter_Payment">Please Enter Payment</string>
+    <string name="Please_Enter_Budget">Please Enter Budget</string>
+    <string name="Please_Enter_Deposit_Target">Please Enter Deposit Target</string>
+
+    <string name="Add">Add</string>
+
+    <string name="Added">Added</string>
+
+    <string name="Save">Save</string>
+    <string name="Saved">Saved</string>
+
+    <string name="Close">Close</string>
+
+    <string name="Delete">Delete</string>
+    <string name="Deleted">Deleted</string>
+
+    <string name="Cancel">Cancel</string>
+
+    <string name="Ok">Ok</string>
+
+    <string name="Currency_Type">Select a currency</string>
+
+    <string name="Language_Changed">Language was set as English</string>
+    <string name="UNDO_TEXT">Changing was removed</string>
 </resources>

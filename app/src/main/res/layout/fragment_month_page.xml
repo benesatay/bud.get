@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,55 +11,49 @@
     android:background="#212121"
     tools:context=".month_page">
 
-    <!--
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutInMonthPage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toTopOf="@+id/savingLinearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-        -->
+        android:layout_height="200dp">
 
-
-    <ScrollView
-        android:id="@+id/scrollview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"
-        android:orientation="vertical"
-        android:scrollbarSize="1dp"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:verticalScrollbarPosition="left">
-
-        <LinearLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@drawable/month_page_linear_layout_custom_divider"
-            android:orientation="vertical"
-            android:showDividers="middle">
+            android:layout_height="match_parent"
+            android:background="#363636"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="top"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/mToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#363636"
+                android:minHeight="40dp"
+                android:theme="?attr/actionBarTheme"
+                app:buttonGravity="top|bottom"
+                app:layout_collapseMode="pin"
+                app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxButtonHeight="40dp"
+                app:menu="@menu/custom_toolbar"
+                app:titleTextAppearance="@style/toolbarTitleSize"
+                app:titleTextColor="#FFFFFF"/>
 
             <LinearLayout
                 android:id="@+id/savingLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="70dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_edittext_border"
                 android:orientation="horizontal">
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/savingEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -63,7 +61,7 @@
                     android:layout_weight="3"
                     android:ems="10"
                     android:fontFamily="@font/nunito_sans_semibold"
-                    android:hint="Yapmak istediğiniz birikimi giriniz"
+                    android:hint="@string/deposit_edit_text"
                     android:importantForAutofill="no"
                     android:inputType="numberDecimal"
                     android:textColor="#DFFFFFFF"
@@ -73,9 +71,11 @@
                     android:textSize="16sp"
                     android:theme="@style/CustomEditTextStyle"
                     tools:layout_editor_absoluteX="15dp"
-                    tools:layout_editor_absoluteY="16dp" />
+                    tools:layout_editor_absoluteY="16dp"
+                    android:imeOptions="actionDone"/>
 
-                <ImageButton
+
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/addSavingImageButton"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
@@ -90,12 +90,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="130dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/custom_edittext_border"
                 android:orientation="horizontal">
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/budgetEditText"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -104,7 +104,7 @@
                     android:autofillHints=""
                     android:ems="10"
                     android:fontFamily="@font/nunito_sans_semibold"
-                    android:hint="Aylık bütçenizi giriniz"
+                    android:hint="@string/budget_edit_text"
                     android:inputType="number"
                     android:textColor="#DFFFFFFF"
                     android:textColorHighlight="#DFFFFFFF"
@@ -113,9 +113,10 @@
                     android:textSize="16sp"
                     android:theme="@style/CustomEditTextStyle"
                     tools:layout_editor_absoluteX="8dp"
-                    tools:layout_editor_absoluteY="16dp" />
+                    tools:layout_editor_absoluteY="16dp"
+                    android:imeOptions="actionDone"/>
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/budgetImageButton"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
@@ -124,6 +125,37 @@
                     app:srcCompat="@drawable/ic_add_black_24dp" />
 
             </LinearLayout>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp"
+        android:orientation="vertical"
+        android:scrollbarSize="1dp"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mToolbar"
+        tools:verticalScrollbarPosition="left">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/month_page_linear_layout_custom_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
@@ -168,7 +200,7 @@
                                 android:layout_weight="1"
                                 android:fontFamily="@font/nunito_sans_bold"
                                 android:gravity="center"
-                                android:text="Harcama"
+                                android:text="@string/payment"
                                 android:textColor="#95FFFFFF"
                                 android:textStyle="bold"
                                 tools:layout_editor_absoluteX="167dp"
@@ -182,7 +214,7 @@
                                 android:layout_weight="2"
                                 android:fontFamily="@font/nunito_sans_bold"
                                 android:gravity="center"
-                                android:text="Tarih"
+                                android:text="@string/payment_date"
                                 android:textColor="#95FFFFFF"
                                 android:textStyle="bold"
                                 tools:layout_editor_absoluteX="167dp"
@@ -195,7 +227,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:layout_marginTop="1dp"
-                            android:background="@drawable/custom_listview_border">
+                            android:background="@drawable/custom_listview_border"
+                            android:nestedScrollingEnabled="true">
 
                         </ListView>
                     </LinearLayout>
@@ -229,7 +262,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_sans_semibold"
                 android:gravity="center"
-                android:text="Detaylar"
+                android:text="@string/detail_text"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
@@ -255,11 +288,11 @@
 
                     <TextView
                         android:id="@+id/totalPaymentText"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/nunito_sans_semibold"
                         android:gravity="center_vertical"
-                        android:text="Aylık Toplam Harcamanız : "
+                        android:text="@string/total_payment_monthly"
                         android:textColor="#FAFAFA"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -280,6 +313,15 @@
                         tools:layout_editor_absoluteX="229dp"
                         tools:layout_editor_absoluteY="661dp" />
 
+                    <TextView
+                        android:id="@+id/currencyOfMTP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <ImageButton
                         android:id="@+id/totalPaymentOnMonthDeleteImageButton"
                         android:layout_width="70dp"
@@ -299,11 +341,11 @@
 
                     <TextView
                         android:id="@+id/savingText"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/nunito_sans_semibold"
                         android:gravity="center_vertical"
-                        android:text="Birikim Girdiniz: "
+                        android:text="@string/entered_deposit"
                         android:textColor="#FAFAFA"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -324,6 +366,15 @@
                         tools:layout_editor_absoluteX="199dp"
                         tools:layout_editor_absoluteY="559dp" />
 
+                    <TextView
+                        android:id="@+id/currencyOfED"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <ImageButton
                         android:id="@+id/depositDeleteImageButton"
                         android:layout_width="70dp"
@@ -343,11 +394,11 @@
 
                     <TextView
                         android:id="@+id/budgetText"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/nunito_sans_semibold"
                         android:gravity="center_vertical"
-                        android:text="Toplam bütçe : "
+                        android:text="@string/total_budget"
                         android:textColor="#FAFAFA"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -360,6 +411,15 @@
                         android:fontFamily="@font/nunito_sans_semibold"
                         android:gravity="center_vertical"
                         android:text="total budget"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/currencyOfTB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:textColor="#FAFAFA"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -383,11 +443,11 @@
 
                     <TextView
                         android:id="@+id/balanceText"
-                        android:layout_width="200dp"
+                        android:layout_width="180dp"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/nunito_sans_semibold"
                         android:gravity="center_vertical"
-                        android:text="Kalan Bütçeniz : "
+                        android:text="@string/balance"
                         android:textColor="#FAFAFA"
                         android:textSize="15sp"
                         android:textStyle="bold"
@@ -408,6 +468,15 @@
                         tools:layout_editor_absoluteX="229dp"
                         tools:layout_editor_absoluteY="695dp" />
 
+                    <TextView
+                        android:id="@+id/currencyOfB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
                     <ImageButton
                         android:id="@+id/balanceDeleteImageButton"
                         android:layout_width="70dp"
@@ -419,7 +488,7 @@
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
