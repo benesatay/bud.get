@@ -46,7 +46,6 @@ public class SettingsActivity extends AppCompatActivity {
         ImageButton turkeyButton = findViewById(R.id.turkeyButton);
         ImageButton ukButton = findViewById(R.id.ukButton);
 
-
         intent = new Intent(this, MainActivity.class);
 
         turkeyButton.setOnClickListener(new View.OnClickListener() {
@@ -114,10 +113,6 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.putExtra(today_page.CURRENCY, currency);
             }
         });
-
-
-
-
     }
 
     public void setLocale(final String language) {

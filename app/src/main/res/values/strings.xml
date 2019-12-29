@@ -61,4 +61,17 @@
 
     <string name="Language_Changed">Language was set as English</string>
     <string name="UNDO_TEXT">Changing was removed</string>
+
+    <string-array name="payment_types_in_spinner">
+        <item>@string/eat_category</item>
+        <item>@string/clothing_category</item>
+        <item>@string/cosmetics_category</item>
+        <item>@string/technology_category</item>
+    </string-array>
+
+    <string name="eat_category">Eat</string>
+    <string name="clothing_category">clothing</string>
+    <string name="cosmetics_category">cosmetics</string>
+    <string name="technology_category">technology</string>
+
 </resources>

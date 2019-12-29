@@ -16,7 +16,7 @@
         android:minHeight="40dp"
         android:theme="?attr/actionBarTheme"
         app:buttonGravity="top|bottom"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/listViewNamelinearLayoutInTodayPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         app:titleTextColor="#FFFFFF" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/listViewNamelinearLayoutInTodayPage"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
@@ -74,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/listViewNamelinearLayoutInTodayPage">
 
         <TextView
             android:id="@+id/currencyTextView"

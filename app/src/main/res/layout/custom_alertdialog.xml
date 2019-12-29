@@ -3,7 +3,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <EditText
+    <Spinner
+        android:id="@+id/addPaymentNameSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
             android:id="@+id/editTextinAlertDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

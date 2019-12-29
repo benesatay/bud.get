@@ -41,4 +41,8 @@
     <string name="Currency_Type">Para birimi seçiniz</string>
     <string name="Language_Changed">Dil Türkçe olarak Ayarlandı</string>
     <string name="UNDO_TEXT">Değişiklik Geri Alındı</string>
+    <string name="clothing_category">Giyim</string>
+    <string name="cosmetics_category">Kozmetik</string>
+    <string name="eat_category">Yemek</string>
+    <string name="technology_category">Teknoloji</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.budget;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -64,7 +67,7 @@ public class profile_page extends Fragment {
         ImageButton allTimeTotalPaymentDeleteImageButton = view.findViewById(R.id.allTimeTotalPaymentImageButton);
         ImageButton allTimeTotalSavingImageButton = view.findViewById(R.id.allTimeTotalSavingImageButton);
 
-        BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
+        final BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
         profilePaymentList = (ArrayList<PaymentDataOfProfilePage>) budgetDatabaseHelper.getAllProfilePagePaymentData();
 
         generatePaymentListAndPaymentNameList(profilePaymentList);
@@ -136,7 +139,33 @@ public class profile_page extends Fragment {
         allTimeTotalPaymentDeleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final BudgetDatabaseHelper pBudgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
+                SharedPreferences sqlSharedPreferences = getActivity().getSharedPreferences("SQL", 0);
+                final SharedPreferences.Editor dbEditor = sqlSharedPreferences.edit();
+                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
+                deleteDialog.setPositiveButton(getString(R.string.Cancel), null);
+                deleteDialog.setNegativeButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                        //if daily paymentlist is not empty,
+                        // paymentlist's elements (payment and name) are got to profile page
+                        // when cleared profile page payment table from database.
+
+                        pBudgetDatabaseHelper.clearProfilePagePaymentTable();
+                        ArrayList<PaymentDataOfTodayPage> paymentListOfTodayPage = (ArrayList<PaymentDataOfTodayPage>) pBudgetDatabaseHelper.getAllTodayPagePaymentData();
+                        if(paymentListOfTodayPage.size()>0) {
+                            for(int position=0; position<paymentListOfTodayPage.size(); position++) {
+                                pBudgetDatabaseHelper.insertPaymentOfProfilePage(paymentListOfTodayPage.get(position).getPayment(), paymentListOfTodayPage.get(position).getPaymentName());
+                                dbEditor.commit();
+                            }
+                        }
+                        dialog.dismiss();
+                        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
+                        getActivity().recreate();
+                    }
+                });
+                deleteDialog.show();
             }
         });
 

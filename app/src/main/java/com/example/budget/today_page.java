@@ -10,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -136,7 +139,7 @@ public class today_page extends Fragment {
 
         //if paymentlist is empty, textviews that called "harcama" and "tarih" are invisible and paymentlist backgroundcolor is same with main screen backgrouncolor.
         if(paymentListOfTodayPage.isEmpty()) {
-            LinearLayout listViewNamelinearLayout = view.findViewById(R.id.listViewNamelinearLayout);
+            LinearLayout listViewNamelinearLayout = view.findViewById(R.id.listViewNamelinearLayoutInMonthPage);
             listViewNamelinearLayout.setVisibility(View.INVISIBLE);
             paymentListView.setBackgroundColor(212121);
         }
@@ -191,6 +194,8 @@ public class today_page extends Fragment {
                 differenceOfDates = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2)) - Integer.valueOf(monthlypaymentList.get(0).getMpaymentDate().substring(0,2));
             } catch (NullPointerException e) {
                 differenceOfDates = 0;
+            } catch (IndexOutOfBoundsException e) {
+                differenceOfDates = 0;
             }
         } else {
             String oldDateInButton;
@@ -203,7 +208,6 @@ public class today_page extends Fragment {
 
         //listview will be cleared when new payment is added in new day
         if (differenceOfDates > 0) {
-
             try {
                     //silinmeden önce tekrar gönderilerek oradaki veriler korunur
                     String jsonTotalPayment = gson.toJson(todaysTotalPaymentTextView.getText().toString());
@@ -221,16 +225,21 @@ public class today_page extends Fragment {
                 } catch (IndexOutOfBoundsException e) {
                     paymentListOfTodayPage.clear();
 
+                    /*
                     budgetDatabaseHelper.insertPaymentOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate));
                     budgetDatabaseHelper.insertPaymentOfProfilePage(enteredPayment, forWhatStr);
                     dbEditor.commit();
 
+                     */
+
                 }
+
 
             paymentListOfTodayPage.add(0, new PaymentDataOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate)));
             budgetDatabaseHelper.insertPaymentOfTodayPage(enteredPayment, forWhatStr, todaysDateFormatWithHour.format(todaysDate));
             budgetDatabaseHelper.insertPaymentOfProfilePage(enteredPayment, forWhatStr);
             dbEditor.commit();
+
 
             paymentListView.setAdapter(customAdapter);
             Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Added), Toast.LENGTH_SHORT).show();
@@ -260,12 +269,6 @@ public class today_page extends Fragment {
         //so we must set to payment listview when a new day is came.
         paymentListView.setAdapter(customAdapter);
 
-        //app is recreated when the first element is added for access to wanted display in today_page, listViewNamelinearLayout will visible
-        //if we do not use if statement, the app is recreated when each element adding and this causes bad using.
-        if(paymentListOfTodayPage.size() < 2) {
-            getActivity().recreate();
-        }
-
         //total payment is calculated
         int totalPaymentOnDay = 0;
         for(int indexofPaymentList = 0; indexofPaymentList < paymentListOfTodayPage.size(); indexofPaymentList++) {
@@ -291,6 +294,12 @@ public class today_page extends Fragment {
             System.out.println("lastPaymentDateToJson is 0");
         }
         editor.commit();
+
+        //app is recreated when the first element is added for access to wanted display in today_page, listViewNamelinearLayout will visible
+        //if we do not use if statement, the app is recreated when each element adding and this causes bad using.
+        if(paymentListOfTodayPage.size() < 2) {
+            getActivity().recreate();
+        }
     }
 
     public void deleteTotalPaymentOnDay() {
@@ -317,7 +326,7 @@ public class today_page extends Fragment {
                 paymentListOfTodayPage.clear();
 
                 budgetDatabaseHelper.clearTodayPagePaymentTable();
-                budgetDatabaseHelper.clearProfilePagePaymentTable();
+                //budgetDatabaseHelper.clearProfilePagePaymentTable();
 
                 String jsonTotalPayment = gson.toJson(todaysTotalPaymentTextView.getText().toString());
                 editor.putString("jsonTotalPayment", jsonTotalPayment);
@@ -351,6 +360,9 @@ public class today_page extends Fragment {
 
 
     }
+
+
+
 
     final class CustomAdapter extends BaseAdapter {
 
@@ -389,13 +401,26 @@ public class today_page extends Fragment {
             TextView dateTextView = convertView.findViewById(R.id.dateTextView);
             TextView currencyTextView = convertView.findViewById(R.id.currencyTextView);
 
-            String currency = getActivity().getIntent().getStringExtra(CURRENCY);
+
+            String currencyFromJson = sharedPref.getString("currencyToJson", null);
+            Type typeCurrency = new TypeToken<String>() {}.getType();
+            String currency;
+            try {
+                currency = gson.fromJson(currencyFromJson, typeCurrency);
+            } catch (NullPointerException e) {
+                currency = getActivity().getIntent().getStringExtra(CURRENCY);
+            }
+
+            if(getActivity().getIntent().getStringExtra(CURRENCY) != null) {
+                currency = getActivity().getIntent().getStringExtra(CURRENCY);
+            }
+
             String currencyToJson = gson.toJson(currency);
             editor.putString("currencyToJson",currencyToJson);
             editor.commit();
 
+            //dailyTotalPaymentTextview is in the bottom of screen.
             currencyOfDTP.setText(currency);
-
 
             try {
                 currencyTextView.setText(currency);
@@ -418,6 +443,7 @@ public class today_page extends Fragment {
 
                     final EditText editTextInAlertDialog = customAlertdialog.findViewById(R.id.editTextinAlertDialog);
                     final TextView textViewInAlertDialog = customAlertdialog.findViewById(R.id.textViewinAlertDialog);
+                    textViewInAlertDialog.setText(editTextInAlertDialog.getText().toString());
 
                     try {
                         textViewInAlertDialog.setText(String.valueOf(paymentListOfTodayPage.get(position).getPaymentName()));
@@ -427,8 +453,27 @@ public class today_page extends Fragment {
                         System.out.println("IndexOutOfBoundsException in alertdialog");
                     }
 
+                    Spinner paymentNameSpinner = customAlertdialog.findViewById(R.id.addPaymentNameSpinner);
+                    ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.payment_types_in_spinner, android.R.layout.simple_spinner_item);
+                    spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    paymentNameSpinner.setAdapter(spinnerAdapter);
+
                     pencilDialog.setMessage(getString(R.string.Enter_Payment_Name));
                     pencilDialog.setNegativeButton(getString(R.string.Close), null);
+
+                    paymentNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            String selectedPaymentName = parent.getItemAtPosition(position).toString();
+                            System.out.println(selectedPaymentName);
+                            textViewInAlertDialog.setText(selectedPaymentName);
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+
                     pencilDialog.setPositiveButton(getString(R.string.Save), new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -439,12 +484,11 @@ public class today_page extends Fragment {
                             //if the empty string does not removed from list
                             //whole list elements become empty string after a point.
                             //so I removed the data in clicked position.
-                            textViewInAlertDialog.setText(editTextInAlertDialog.getText().toString());
+                            BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
 
                             String paymentTransfering = paymentListOfTodayPage.get(position).getPayment();
                             String paymentDateTransfering = paymentListOfTodayPage.get(position).getPaymentDate();
                             String paymentNameTransfering = paymentListOfTodayPage.get(position).getPaymentName();
-                            BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
 
                             paymentListOfTodayPage.remove(position);
                             budgetDatabaseHelper.deleteRowOfTodayPagePaymentTable(paymentTransfering, paymentNameTransfering, paymentDateTransfering);

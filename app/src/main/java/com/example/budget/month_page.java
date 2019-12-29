@@ -46,9 +46,6 @@ public class month_page extends Fragment {
 
     ArrayList<PaymentDataOfMonthPage> monthlypaymentList;
 
-    List<String> paymentArrayListAsDaily = new ArrayList<String>();
-    List<String> dateArrayListasDaily = new ArrayList<String>();
-
     List<Integer> budgetArrList = new ArrayList<Integer>();
 
     public ArrayList barEntryDate = new ArrayList();
@@ -240,6 +237,11 @@ public class month_page extends Fragment {
             currency = gson.fromJson(currencyFromJson, typeCurrency);
         } catch (NullPointerException e) {
             currency = "";
+
+            currencyOfB.setText(currency);
+            currencyOfTB.setText(currency);
+            currencyOfED.setText(currency);
+            currencyOfMTP.setText(currency);
         }
     }
 
@@ -263,29 +265,28 @@ public class month_page extends Fragment {
         //jsonTotalPayment from today_page
         String jsonTotalPaymentFromTodayPage = sharedPref.getString("jsonTotalPayment", null);
         Type typeTotalPaymentFromTodayPage = new TypeToken<String>() {}.getType();
-
         //total payment for 1 month
-        String enteredTotalPayment;
-        try {
-            enteredTotalPayment = String.valueOf(gson.fromJson(jsonTotalPaymentFromTodayPage,typeTotalPaymentFromTodayPage));
-        } catch (NullPointerException e) {
-            enteredTotalPayment = "0";
-            System.out.println("enteredTotalPayment is 0");
-        }
+        int savedTotalPayment;
 
         String jsonTotalPaymentDate = sharedPref.getString("lastPaymentDateToJson", null);
         Type typeTotalPaymentDate = new TypeToken<String>() {}.getType();
         String paymentDate;
-
         try {
+            savedTotalPayment = Integer.valueOf(String.valueOf(gson.fromJson(jsonTotalPaymentFromTodayPage,typeTotalPaymentFromTodayPage)));
             paymentDate = String.valueOf(gson.fromJson(jsonTotalPaymentDate, typeTotalPaymentDate));
         } catch (NullPointerException e) {
+            savedTotalPayment = 0;
+            System.out.println("savedTotalPayment is 0");
+            paymentDate = "0";
+        } catch (NumberFormatException e) {
+
+            savedTotalPayment = 0;
+            System.out.println("savedTotalPayment is 0");
             paymentDate = "0";
         }
 
         if(monthlypaymentList.isEmpty()) {
             try {
-                //dateArrayListasDaily.add(0,paymentDate);
                 if(paymentDate.length() < 2) {
                     differenceOfDates = Integer.valueOf(paymentDate);
                 } else {
@@ -294,7 +295,6 @@ public class month_page extends Fragment {
             } catch (NumberFormatException e) {
                 differenceOfDates = 1;
             }
-
         } else {
             try {
                 if(paymentDate.length() < 2) {
@@ -308,20 +308,26 @@ public class month_page extends Fragment {
         }
 
         if (differenceOfDates == 0) {
-
             //main activity'den gelen totalpayment ve paymentdate listeye tekrar eklenir böylece 0.indexteki eleman 1'e kayar
             //ilk 2 elemanın eklenme tarihleri aynı ise 0. indexteki eleman,
             //son eklenen ve aynı tarihte önceden eklenmiş (önceden 0. indexteki eleman) olan  2 payment'ın toplamı olur
             //bu yüzden 1. indexteki elemanın silinmesi gerekir
-            monthlypaymentList.add(0, new PaymentDataOfMonthPage(enteredTotalPayment,paymentDate.substring(0,10)));
+            monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
+            mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
+            mBudgetDatabaseHelper.deleteRowOfMonthPagePaymentTable(monthlypaymentList.get(1).getMpayment(), monthlypaymentList.get(1).getMpaymentDate());
+            settingsEditor.commit();
+
             monthlypaymentList.remove(1);
             monthlypaymentList.remove(null);
-
         } else {
-            //eğer eklenme tarihleri farklı ise normal ekleme işlemi yapılarak günlük liste tutulur
-            monthlypaymentList.add(0, new PaymentDataOfMonthPage(enteredTotalPayment,paymentDate.substring(0,10)));
-            mBudgetDatabaseHelper.insertPaymentOfMonthPage(enteredTotalPayment, paymentDate.substring(0,10));
-            settingsEditor.commit();
+            if(savedTotalPayment != 0 || paymentDate != "0") {
+                //eğer eklenme tarihleri farklı ise normal ekleme işlemi yapılarak günlük liste tutulur
+                monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
+                mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
+                settingsEditor.commit();
+            } else {
+                monthlypaymentList.remove(0);
+            }
         }
 
         int totalPaymentInMonth = 0;
@@ -331,13 +337,7 @@ public class month_page extends Fragment {
                 try {
                     totalPaymentInMonth = Integer.valueOf(monthlypaymentList.get(0).getMpayment());
                 } catch (NumberFormatException e) {
-
                     monthlypaymentList.clear();
-
-                    /*
-                    paymentArrayListAsDaily.clear();
-                    dateArrayListasDaily.clear();
-                     */
                 }
             } else {
                 try {
@@ -354,6 +354,12 @@ public class month_page extends Fragment {
             //total payment in month is showed in this textView
             totalPaymentInMonthTextView.setText(String.valueOf(totalPaymentInMonth));
         }
+
+        //toJSON, changed values are notified
+        String jsonTotalPaymentMonthly = gson.toJson(totalPaymentInMonthTextView.getText().toString());
+        editor.putString("jsonTotalPaymentMonthly", jsonTotalPaymentMonthly);
+
+        editor.commit();
 
         try {
             balanceTextView.setText(String.valueOf(Integer.valueOf(budgetTextView.getText().toString()) - Integer.valueOf(totalPaymentInMonthTextView.getText().toString())));
@@ -603,17 +609,7 @@ public class month_page extends Fragment {
                 barEntries.add(new BarEntry(Float.valueOf(monthlypaymentList.get(indexOfPaymentArray).getMpayment()), indexOfPaymentArray));
             } catch (NumberFormatException e) {
 
-                monthlypaymentList.remove(indexOfPaymentArray);
-                monthlypaymentList.remove(null);
-
-                /*
-                paymentArrayListAsDaily.remove(indexOfPaymentArray);
-                dateArrayListasDaily.remove(indexOfPaymentArray);
-                paymentArrayListAsDaily.remove(null);
-                dateArrayListasDaily.remove(null);
-                 */
-
-                barEntries.add(new BarEntry(Float.valueOf(monthlypaymentList.get(indexOfPaymentArray).getMpayment()), indexOfPaymentArray));
+                //barEntries.add(new BarEntry(Float.valueOf(monthlypaymentList.get(indexOfPaymentArray).getMpayment()), indexOfPaymentArray));
             }
 
             try {
