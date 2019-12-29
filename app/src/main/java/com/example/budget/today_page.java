@@ -30,6 +30,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -139,7 +141,7 @@ public class today_page extends Fragment {
 
         //if paymentlist is empty, textviews that called "harcama" and "tarih" are invisible and paymentlist backgroundcolor is same with main screen backgrouncolor.
         if(paymentListOfTodayPage.isEmpty()) {
-            LinearLayout listViewNamelinearLayout = view.findViewById(R.id.listViewNamelinearLayoutInMonthPage);
+            LinearLayout listViewNamelinearLayout = view.findViewById(R.id.listViewNamelinearLayoutInTodayPage);
             listViewNamelinearLayout.setVisibility(View.INVISIBLE);
             paymentListView.setBackgroundColor(212121);
         }
@@ -399,7 +401,7 @@ public class today_page extends Fragment {
 
             TextView paymentTextView = convertView.findViewById(R.id.paymentTextView);
             TextView dateTextView = convertView.findViewById(R.id.dateTextView);
-            TextView currencyTextView = convertView.findViewById(R.id.currencyTextView);
+            final TextView currencyTextView = convertView.findViewById(R.id.currencyTextView);
 
 
             String currencyFromJson = sharedPref.getString("currencyToJson", null);
@@ -458,7 +460,12 @@ public class today_page extends Fragment {
                     spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     paymentNameSpinner.setAdapter(spinnerAdapter);
 
-                    pencilDialog.setMessage(getString(R.string.Enter_Payment_Name));
+                    TextView paymentInAlertDialogTextView = customAlertdialog.findViewById(R.id.paymentInAlertDialogTextView);
+                    paymentInAlertDialogTextView.setText(paymentListOfTodayPage.get(position).getPayment() + currencyTextView.getText());
+
+                    TextView enterPaymentTypeText = customAlertdialog.findViewById(R.id.enterPaymentTypeText);
+                    enterPaymentTypeText.setText(getString(R.string.Enter_Payment_Name));
+
                     pencilDialog.setNegativeButton(getString(R.string.Close), null);
 
                     paymentNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -500,7 +507,7 @@ public class today_page extends Fragment {
                             budgetDatabaseHelper.insertPaymentOfProfilePage(paymentTransfering, textViewInAlertDialog.getText().toString());
 
                             dialog.dismiss();
-                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Saved), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), paymentListOfTodayPage.get(position).getPayment() + currencyTextView.getText().toString() + " " + paymentListOfTodayPage.get(position).getPaymentName() + " " + getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                         }
                     });
                     pencilDialog.create();

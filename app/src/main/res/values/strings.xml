@@ -35,7 +35,7 @@
     <string name="Monthly_Payment_Chart">Monthly Payment Chart</string>
     <string name="Bar_Chart_Color_Name">Payments</string>
 
-    <string name="Enter_Payment_Name">Enter payment name</string>
+    <string name="Enter_Payment_Name">Enter or select payment name</string>
 
     <string name="Please_Enter_Payment">Please Enter Payment</string>
     <string name="Please_Enter_Budget">Please Enter Budget</string>

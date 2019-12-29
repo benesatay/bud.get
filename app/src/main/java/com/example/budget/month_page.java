@@ -277,12 +277,12 @@ public class month_page extends Fragment {
         } catch (NullPointerException e) {
             savedTotalPayment = 0;
             System.out.println("savedTotalPayment is 0");
-            paymentDate = "0";
+            paymentDate = todaysDateFormatWithHour.format(todaysDate);
         } catch (NumberFormatException e) {
 
             savedTotalPayment = 0;
             System.out.println("savedTotalPayment is 0");
-            paymentDate = "0";
+            paymentDate = todaysDateFormatWithHour.format(todaysDate);
         }
 
         if(monthlypaymentList.isEmpty()) {
@@ -312,21 +312,24 @@ public class month_page extends Fragment {
             //ilk 2 elemanın eklenme tarihleri aynı ise 0. indexteki eleman,
             //son eklenen ve aynı tarihte önceden eklenmiş (önceden 0. indexteki eleman) olan  2 payment'ın toplamı olur
             //bu yüzden 1. indexteki elemanın silinmesi gerekir
-            monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
-            mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
-            mBudgetDatabaseHelper.deleteRowOfMonthPagePaymentTable(monthlypaymentList.get(1).getMpayment(), monthlypaymentList.get(1).getMpaymentDate());
-            settingsEditor.commit();
+            if(Integer.valueOf(paymentDate.substring(0,2)) == Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2))) {
+                monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
+                mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
+                mBudgetDatabaseHelper.deleteRowOfMonthPagePaymentTable(monthlypaymentList.get(1).getMpayment(), monthlypaymentList.get(1).getMpaymentDate());
+                settingsEditor.commit();
 
-            monthlypaymentList.remove(1);
-            monthlypaymentList.remove(null);
+                monthlypaymentList.remove(1);
+                monthlypaymentList.remove(null);
+            }
         } else {
-            if(savedTotalPayment != 0 || paymentDate != "0") {
+
+            if(savedTotalPayment == 0 || paymentDate == "0") {
+                monthlypaymentList.remove(0);
+            } else {
                 //eğer eklenme tarihleri farklı ise normal ekleme işlemi yapılarak günlük liste tutulur
                 monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
                 mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
                 settingsEditor.commit();
-            } else {
-                monthlypaymentList.remove(0);
             }
         }
 

@@ -25,7 +25,7 @@
     <string name="Total_Deposit">Toplam Birikim</string>
     <string name="Total_Payment">Toplam Harcama</string>
     <string name="Payment_Types">Harcama Türleri</string>
-    <string name="Enter_Payment_Name">Harcama adını giriniz</string>
+    <string name="Enter_Payment_Name">Harcama adını seçiniz/giriniz</string>
     <string name="Add">Ekle</string>
     <string name="Added">Eklendi</string>
     <string name="Cancel">İptal</string>
