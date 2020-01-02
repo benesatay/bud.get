@@ -1,15 +1,21 @@
 package com.example.budget;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -82,8 +88,9 @@ public class month_page extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //database is created
+        new asyncTask().execute();
         BudgetDatabaseHelper mBudgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
-        SharedPreferences settings = getActivity().getSharedPreferences("SQL", 0);
         monthlypaymentList = (ArrayList<PaymentDataOfMonthPage>) mBudgetDatabaseHelper.getAllMonthPagePaymentData();
 
         final CustomAdapter customAdapter = new CustomAdapter(monthlypaymentList);
@@ -125,6 +132,9 @@ public class month_page extends Fragment {
             @Override
             public void onClick(View v) {
                 addSaving();
+                // This hides the android keyboard
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
             }
         });
 
@@ -132,6 +142,9 @@ public class month_page extends Fragment {
             @Override
             public void onClick(View v) {
                 addBudget();
+                // This hides the android keyboard
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
             }
         });
 
@@ -247,26 +260,30 @@ public class month_page extends Fragment {
 
     public void generatePaymentListAndPaymentDateListAndTotalPayment() {
 
+        final SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+
+        final Gson gson = new Gson();
+        /*
         BudgetDatabaseHelper mBudgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
 
         SharedPreferences settings = getActivity().getSharedPreferences("SQL", 0);
         SharedPreferences.Editor settingsEditor = settings.edit();
 
-        final SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPref.edit();
 
-        final Gson gson = new Gson();
 
         int differenceOfDates;
 
         Date todaysDate = new Date();
         SimpleDateFormat todaysDateFormatWithHour = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-        //jsonTotalPayment from today_page
+
+        jsonTotalPayment from today_page
         String jsonTotalPaymentFromTodayPage = sharedPref.getString("jsonTotalPayment", null);
         Type typeTotalPaymentFromTodayPage = new TypeToken<String>() {}.getType();
-        //total payment for 1 month
-        int savedTotalPayment;
+       total payment for 1 month
+       int savedTotalPayment;
+
 
         String jsonTotalPaymentDate = sharedPref.getString("lastPaymentDateToJson", null);
         Type typeTotalPaymentDate = new TypeToken<String>() {}.getType();
@@ -279,50 +296,62 @@ public class month_page extends Fragment {
             System.out.println("savedTotalPayment is 0");
             paymentDate = todaysDateFormatWithHour.format(todaysDate);
         } catch (NumberFormatException e) {
-
             savedTotalPayment = 0;
             System.out.println("savedTotalPayment is 0");
             paymentDate = todaysDateFormatWithHour.format(todaysDate);
         }
 
+
         if(monthlypaymentList.isEmpty()) {
             try {
+
                 if(paymentDate.length() < 2) {
                     differenceOfDates = Integer.valueOf(paymentDate);
                 } else {
                     differenceOfDates = Integer.valueOf(paymentDate.substring(0,2));
                 }
+
+
+                differenceOfDates = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2));
             } catch (NumberFormatException e) {
                 differenceOfDates = 1;
             }
         } else {
             try {
+
                 if(paymentDate.length() < 2) {
                     differenceOfDates = Integer.valueOf(paymentDate) - Integer.valueOf(monthlypaymentList.get(0).getMpaymentDate().substring(0,2));
                 } else {
                     differenceOfDates = Integer.valueOf(paymentDate.substring(0,2)) - Integer.valueOf(monthlypaymentList.get(0).getMpaymentDate().substring(0,2));
                 }
+
+
+                differenceOfDates = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2)) - Integer.valueOf(monthlypaymentList.get(0).getMpaymentDate().substring(0,2));;
             } catch (NumberFormatException e) {
                 differenceOfDates = 1;
             }
         }
+
 
         if (differenceOfDates == 0) {
             //main activity'den gelen totalpayment ve paymentdate listeye tekrar eklenir böylece 0.indexteki eleman 1'e kayar
             //ilk 2 elemanın eklenme tarihleri aynı ise 0. indexteki eleman,
             //son eklenen ve aynı tarihte önceden eklenmiş (önceden 0. indexteki eleman) olan  2 payment'ın toplamı olur
             //bu yüzden 1. indexteki elemanın silinmesi gerekir
-            if(Integer.valueOf(paymentDate.substring(0,2)) == Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2))) {
-                monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
-                mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
-                mBudgetDatabaseHelper.deleteRowOfMonthPagePaymentTable(monthlypaymentList.get(1).getMpayment(), monthlypaymentList.get(1).getMpaymentDate());
-                settingsEditor.commit();
+            monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
+            mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
+            mBudgetDatabaseHelper.deleteRowOfMonthPagePaymentTable(monthlypaymentList.get(1).getMpayment(), monthlypaymentList.get(1).getMpaymentDate());
+            settingsEditor.commit();
 
-                monthlypaymentList.remove(1);
-                monthlypaymentList.remove(null);
-            }
+            monthlypaymentList.remove(1);
+            monthlypaymentList.remove(null);
         } else {
+            //eğer eklenme tarihleri farklı ise normal ekleme işlemi yapılarak günlük liste tutulur
+            monthlypaymentList.add(0, new PaymentDataOfMonthPage(String.valueOf(savedTotalPayment),paymentDate.substring(0,10)));
+            mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
+            settingsEditor.commit();
 
+            /**
             if(savedTotalPayment == 0 || paymentDate == "0") {
                 monthlypaymentList.remove(0);
             } else {
@@ -331,11 +360,14 @@ public class month_page extends Fragment {
                 mBudgetDatabaseHelper.insertPaymentOfMonthPage(String.valueOf(savedTotalPayment), paymentDate.substring(0,10));
                 settingsEditor.commit();
             }
+
         }
+
+
+         */
 
         int totalPaymentInMonth = 0;
         for(int indexOfMPaymentList = 0; indexOfMPaymentList< monthlypaymentList.size(); indexOfMPaymentList++) {
-
             if(monthlypaymentList.size() <= 1) {
                 try {
                     totalPaymentInMonth = Integer.valueOf(monthlypaymentList.get(0).getMpayment());
@@ -367,7 +399,6 @@ public class month_page extends Fragment {
         try {
             balanceTextView.setText(String.valueOf(Integer.valueOf(budgetTextView.getText().toString()) - Integer.valueOf(totalPaymentInMonthTextView.getText().toString())));
         } catch (NumberFormatException e) {
-            System.out.println("balanceTextView.setText(String.valueOf(Integer.valueOf(balanceTextView.getText().toString()) totalPaymentInMonth))");
             balanceTextView.setText("");
         }
     }
@@ -744,6 +775,40 @@ public class month_page extends Fragment {
                 }
             });
             return convertView;
+        }
+    }
+
+    private class asyncTask extends AsyncTask<Void, Void, Boolean> {
+        ProgressDialog pDialog;
+
+        protected void onPreExecute() {
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Downloading...");
+            pDialog.setIndeterminate(true);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        protected Boolean doInBackground(Void... voids) {
+            SQLiteOpenHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity());
+            SQLiteDatabase db = budgetDatabaseHelper.getWritableDatabase();
+            try {
+                db.rawQuery( "select * from monthlypaymenttable", null);
+                db.close();
+                return true;
+            } catch (SQLiteException e) {
+                return false;
+            }
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast toast = Toast.makeText(getActivity(),
+                        "Database unavailable", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                pDialog.dismiss();
+            }
         }
     }
 }

@@ -1,8 +1,13 @@
 package com.example.budget;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +63,8 @@ public class profile_page extends Fragment {
         profileToolbar.setTitle("");
         ((AppCompatActivity)getActivity()).setSupportActionBar(profileToolbar);
         //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        new asyncTask().execute();
 
         creationDateTextView = view.findViewById(R.id.creationDateTextView);
 
@@ -139,9 +146,6 @@ public class profile_page extends Fragment {
         allTimeTotalPaymentDeleteImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BudgetDatabaseHelper pBudgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
-                SharedPreferences sqlSharedPreferences = getActivity().getSharedPreferences("SQL", 0);
-                final SharedPreferences.Editor dbEditor = sqlSharedPreferences.edit();
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
                 deleteDialog.setPositiveButton(getString(R.string.Cancel), null);
                 deleteDialog.setNegativeButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
@@ -151,18 +155,20 @@ public class profile_page extends Fragment {
                         //if daily paymentlist is not empty,
                         // paymentlist's elements (payment and name) are got to profile page
                         // when cleared profile page payment table from database.
-
+                        BudgetDatabaseHelper pBudgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
                         pBudgetDatabaseHelper.clearProfilePagePaymentTable();
                         ArrayList<PaymentDataOfTodayPage> paymentListOfTodayPage = (ArrayList<PaymentDataOfTodayPage>) pBudgetDatabaseHelper.getAllTodayPagePaymentData();
                         if(paymentListOfTodayPage.size()>0) {
                             for(int position=0; position<paymentListOfTodayPage.size(); position++) {
                                 pBudgetDatabaseHelper.insertPaymentOfProfilePage(paymentListOfTodayPage.get(position).getPayment(), paymentListOfTodayPage.get(position).getPaymentName());
-                                dbEditor.commit();
                             }
                         }
                         dialog.dismiss();
+
+                        //list is rebuilt
+                        new asyncTask().execute();
+                        profilePaymentList = (ArrayList<PaymentDataOfProfilePage>) pBudgetDatabaseHelper.getAllProfilePagePaymentData();
                         Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
-                        getActivity().recreate();
                     }
                 });
                 deleteDialog.show();
@@ -290,7 +296,40 @@ public class profile_page extends Fragment {
         } catch (NullPointerException e) {
             System.out.println("creationDate is null in pp");
         }
+    }
 
+    private class asyncTask extends AsyncTask<Void, Void, Boolean> {
+        ProgressDialog pDialog;
+
+        protected void onPreExecute() {
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Downloading...");
+            pDialog.setIndeterminate(true);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        protected Boolean doInBackground(Void... voids) {
+            SQLiteOpenHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity());
+            SQLiteDatabase db = budgetDatabaseHelper.getWritableDatabase();
+            try {
+                db.rawQuery( "select * from profilepaymenttable", null);
+                db.close();
+                return true;
+            } catch (SQLiteException e) {
+                return false;
+            }
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast toast = Toast.makeText(getActivity(),
+                        "Database unavailable", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                pDialog.dismiss();
+            }
+        }
     }
 
 }

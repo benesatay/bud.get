@@ -1,15 +1,23 @@
 package com.example.budget;
 
+import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ShareActionProvider;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +36,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public static final String LANGUAGE = "lang";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,14 +148,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    @Override
-    public void paymentAndpaymentDateToMonth(String payment, String date) {
 
-        FragmentManager fm = getSupportFragmentManager();
-        month_page mp = (month_page)fm.findFragmentById(R.id.mainFrameLayout);
-        mp.getPaymentsAndDates(payment, date);
-    }
-   */
 
 }

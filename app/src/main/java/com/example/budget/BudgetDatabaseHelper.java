@@ -1,11 +1,16 @@
 package com.example.budget;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.CheckBox;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +19,16 @@ import java.util.List;
 public class BudgetDatabaseHelper extends SQLiteOpenHelper {
 
     public BudgetDatabaseHelper(Context context) {
-        super(context, "budget", null, 18);
+        super(context, "budget", null, 21);
     }
+
+
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+
 
         String sqlPaymentinToday = "CREATE TABLE paymenttable ("
                 + "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -164,7 +174,7 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
             paymentDataOfProfilePageList.add(new PaymentDataOfProfilePage(pcursor.getString(1), pcursor.getString(2)));
         }
 
-        //Collections.reverse(paymentDataOfProfilePageList);
+        Collections.reverse(paymentDataOfProfilePageList);
         return paymentDataOfProfilePageList;
     }
 
