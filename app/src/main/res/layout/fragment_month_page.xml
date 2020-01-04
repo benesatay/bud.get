@@ -185,64 +185,6 @@
                         android:orientation="vertical"
                         android:scrollbars="horizontal">
 
-                        <LinearLayout
-                            android:id="@+id/listViewNamelinearLayoutInMonthPage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="1dp"
-                            android:orientation="horizontal"
-                            tools:layout_editor_absoluteY="202dp">
-
-                            <TextView
-                                android:id="@+id/nullTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:adjustViewBounds="false"
-                                android:background="@null" />
-
-                            <TextView
-                                android:id="@+id/paymentTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/nunito_sans_bold"
-                                android:gravity="center_vertical|end"
-                                android:text="@string/payment"
-                                android:textColor="#FAFAFA"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/nullTextView2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/nunito_sans_bold"
-                                android:gravity="start|center_vertical"
-                                android:textColor="#FFFFFF"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/dateTextView"
-                                android:layout_width="11dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="2"
-                                android:fontFamily="@font/nunito_sans_semibold"
-                                android:gravity="start|center_vertical"
-                                android:text="@string/payment_date"
-                                android:textAllCaps="false"
-                                android:textColor="#FAFAFA"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/nullTextView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:background="@null" />
-
-                        </LinearLayout>
-
                         <ListView
                             android:id="@+id/paymentListInDetailPage"
                             android:layout_width="match_parent"
@@ -257,12 +199,11 @@
 
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/barchart"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="25dp"
-                        android:layout_marginTop="25dp"
                         android:layout_weight="1"
-                        android:minWidth="400dp" />
+                        android:minWidth="800dp" />
 
                 </LinearLayout>
             </HorizontalScrollView>

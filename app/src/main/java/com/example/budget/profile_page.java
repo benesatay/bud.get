@@ -205,13 +205,15 @@ public class profile_page extends Fragment {
                             profilePaymentList.remove(indexOfProfilePaymentList-1);
 
                             profilePaymentList.add(new PaymentDataOfProfilePage(String.valueOf(sumOfSameNamelyPayment), renamedPayment));
+
+
                         }
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println("profilePaymentList.add(new PaymentDataOfProfilePage(String.valueOf(sumOfSameNamelyPayment), renamedPayment));\n");
                     }
                 }
             }
-
+            /*
             int sumOfSameNamelyPayment01 = 0;
             String renamedPayment01 = "";
             try {
@@ -228,6 +230,8 @@ public class profile_page extends Fragment {
                 profilePaymentList.clear();
                 profilePaymentList.add(new PaymentDataOfProfilePage(String.valueOf(sumOfSameNamelyPayment01), renamedPayment01));
             }
+
+             */
         }
 
     }

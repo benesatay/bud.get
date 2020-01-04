@@ -18,21 +18,13 @@
         android:background="@drawable/custom_listitem_border"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/pencilImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:adjustViewBounds="false"
-            android:background="@null" />
-
         <TextView
             android:id="@+id/paymentTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/nunito_sans_bold"
-            android:gravity="center_vertical|end"
+            android:gravity="center_horizontal|center_vertical"
             android:text="@string/payment"
             android:textColor="#FAFAFA"
             android:textStyle="bold" />
@@ -47,31 +39,17 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
-        <View
-            android:id="@+id/paymentDateDivider"
-            android:layout_width="1dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:background="@android:drawable/divider_horizontal_bright" />
-
         <TextView
             android:id="@+id/dateTextView"
-            android:layout_width="11dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:fontFamily="@font/nunito_sans_semibold"
-            android:gravity="center"
+            android:gravity="center_horizontal|center_vertical"
             android:text="@string/payment_date"
             android:textAllCaps="false"
             android:textColor="#FAFAFA"
             android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/deletePaymentImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null" />
 
     </LinearLayout>
 

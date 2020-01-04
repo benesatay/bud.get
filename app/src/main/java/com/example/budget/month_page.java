@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -29,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -659,12 +661,13 @@ public class month_page extends Fragment {
 
             }
         }
-
         try {
             BarDataSet bardataset = new BarDataSet(barEntries, getString(R.string.Bar_Chart_Color_Name));
             BarData bardata = new BarData(barEntryDate, bardataset);
             bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
             bardataset.setBarSpacePercent(1f);
+            bardataset.setValueTextColor(Color.parseColor("#BDBDBD"));
+            bardataset.setValueTextSize(10);
             barChart.setData(bardata);
         } catch (NullPointerException e) {
             barEntries.add(new BarEntry(0f,0));
@@ -673,6 +676,15 @@ public class month_page extends Fragment {
 
         }
 
+
+
+        barChart.getXAxis().setLabelsToSkip(0);
+        barChart.setBorderWidth(50);
+        barChart.getAxisLeft().setTextColor(Color.parseColor("#BDBDBD"));
+        barChart.getAxisRight().setTextColor(Color.parseColor("#BDBDBD"));
+        barChart.getXAxis().setTextColor(Color.parseColor("#BDBDBD"));
+        barChart.setDrawBorders(false);
+        barChart.setDescriptionColor(Color.parseColor("#FFFFFF"));
         barChart.animateY(5000);
         barChart.setDescription(getString(R.string.Monthly_Payment_Chart));
     }
@@ -705,7 +717,7 @@ public class month_page extends Fragment {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
 
-            convertView = getLayoutInflater().inflate(R.layout.custom_listview, null);
+            convertView = getLayoutInflater().inflate(R.layout.custom_month_listview, null);
 
             final SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
             final SharedPreferences.Editor editor = sharedPref.edit();
@@ -714,20 +726,66 @@ public class month_page extends Fragment {
             //total payments on a day are showed in ListView
             TextView totalPaymentOnDayTextView = convertView.findViewById(R.id.paymentTextView);
             //dates of payments are showed in Listview
-            TextView dateTextView = convertView.findViewById(R.id.dateTextView);
             //delete button in the list row
             TextView currencyTextView = convertView.findViewById(R.id.currencyTextView);
 
-            ImageButton deletePaymentImageButton = convertView.findViewById(R.id.deletePaymentImageButton);
-            ImageButton pencilImageButton = convertView.findViewById(R.id.pencilImageButton);
-
-            //ı dont use payment name in detail page so ı made invisible it.
-            pencilImageButton.setVisibility(View.INVISIBLE);
-
             currencyTextView.setText(currency);
             totalPaymentOnDayTextView.setText(String.valueOf(monthlypaymentList.get(position).getMpayment()));
-            dateTextView.setText(String.valueOf(monthlypaymentList.get(position).getMpaymentDate()));
 
+
+            TextView dayTextView = convertView.findViewById(R.id.dayTextView);
+            dayTextView.setText(monthlypaymentList.get(position).getMpaymentDate().substring(0,2));
+            TextView monthTextView = convertView.findViewById(R.id.monthTextView);
+            monthTextView.setText(monthlypaymentList.get(position).getMpaymentDate().substring(3,5));
+            TextView yearTextView = convertView.findViewById(R.id.yearTextView);
+            yearTextView.setText(monthlypaymentList.get(position).getMpaymentDate().substring(6,10));
+
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    //total payment in month after deleting any total payment in any day
+                    final String totalPaymentInMonth = totalPaymentInMonthTextView.getText().toString();
+                    AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getActivity());
+                    deleteDialog.setMessage(String.valueOf(monthlypaymentList.get(position).getMpayment()));
+
+                    deleteDialog.setNegativeButton(getString(R.string.Cancel), null);
+                    deleteDialog.setPositiveButton(getString(R.string.Delete), new AlertDialog.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                totalPaymentInMonthTextView.setText(String.valueOf(Integer.valueOf(totalPaymentInMonth) - Integer.valueOf(monthlypaymentList.get(position).getMpayment())));
+                            } catch (NumberFormatException e) {
+                                System.out.println("NumberFormatException in detail page's custom adapter");
+                            }
+                            BudgetDatabaseHelper budgetDatabaseHelper = new BudgetDatabaseHelper(getActivity().getApplicationContext());
+
+                            budgetDatabaseHelper.deleteRowOfMonthPagePaymentTable(monthlypaymentList.get(position).getMpayment(), monthlypaymentList.get(position).getMpaymentDate());
+                            //payment and date list element in the selected are removed position and null index is removed
+                            monthlypaymentList.remove(position);
+                            monthlypaymentList.remove(null);
+
+                            // Notifies the attached observers that the underlying data has been changed
+                            // and any View reflecting the data set should refresh itself.
+                            notifyDataSetChanged();
+
+                            //toJSON, changed values are notified
+                            String jsonTotalPaymentMonthly = gson.toJson(totalPaymentInMonthTextView.getText().toString());
+                            editor.putString("jsonTotalPaymentMonthly", jsonTotalPaymentMonthly);
+
+                            editor.commit();
+
+                            dialog.dismiss();
+
+                            Toast.makeText(getActivity().getApplicationContext(), getString(R.string.Deleted), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    deleteDialog.show();
+                    return false;
+                }
+            });
+            /*
             //delete button for deleting that selected row (payment-date)
             deletePaymentImageButton.setOnClickListener(new View.OnClickListener() {
 
@@ -774,6 +832,8 @@ public class month_page extends Fragment {
                     deleteDialog.show();
                 }
             });
+
+             */
             return convertView;
         }
     }
