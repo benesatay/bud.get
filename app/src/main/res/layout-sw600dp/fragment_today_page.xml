@@ -9,7 +9,7 @@
     android:background="#212121"
     tools:context=".today_page">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,7 +21,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
@@ -30,37 +30,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:background="#363636"
-                android:minHeight="40dp"
                 app:buttonGravity="top|bottom"
-                app:maxButtonHeight="40dp"
                 app:menu="@menu/custom_toolbar"
                 app:titleTextAppearance="@style/toolbarTitleSize" />
 
 
             <LinearLayout
-                android:id="@+id/paymentListLinearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
-                android:minHeight="500dp"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:minHeight="780dp"
+                android:orientation="horizontal">
 
                 <ListView
                     android:id="@+id/paymentList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
+                    android:layout_weight="1"
                     android:background="@drawable/custom_listview_border"
-                    android:minHeight="400dp"
-                    android:scrollbarSize="4dp"
-                    android:nestedScrollingEnabled="true">
+                    android:nestedScrollingEnabled="true"
+                    android:scrollbarSize="4dp">
 
                 </ListView>
-
             </LinearLayout>
 
             <LinearLayout
@@ -84,6 +79,7 @@
                     android:ems="12"
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:hint="@string/payment_edit_text"
+                    android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="number"
                     android:shadowColor="#BDBDBD"
@@ -93,8 +89,7 @@
                     android:textColorLink="#BDBDBD"
                     android:textCursorDrawable="@android:color/background_dark"
                     android:textSize="16sp"
-                    android:theme="@style/CustomEditTextStyle"
-                    android:imeOptions="actionDone"/>
+                    android:theme="@style/CustomEditTextStyle" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/addPaymentFAB"
@@ -132,6 +127,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/custom_llayout_border"
+                android:gravity="bottom"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -141,6 +137,7 @@
                     android:id="@+id/totalPaymentText"
                     android:layout_width="180dp"
                     android:layout_height="50dp"
+                    android:layout_gravity="top"
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:gravity="center_vertical"
@@ -155,6 +152,7 @@
                     android:id="@+id/todaysTotalPaymentTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
+                    android:layout_gravity="top"
                     android:layout_weight="1"
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:gravity="center_vertical|end"
@@ -176,7 +174,8 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="229dp"
-                    tools:layout_editor_absoluteY="661dp" />
+                    tools:layout_editor_absoluteY="661dp"
+                    android:layout_gravity="top" />
 
                 <ImageButton
                     android:id="@+id/totalPaymentOnDayDeleteImageButton"
@@ -185,10 +184,11 @@
                     android:layout_gravity="top"
                     android:layout_marginEnd="10dp"
                     android:background="@null"
+                    android:scaleType="center"
                     app:srcCompat="@drawable/ic_delete_black_24dp" />
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

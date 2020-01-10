@@ -1,30 +1,52 @@
 package com.example.budget;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    Uri uri;
+    Bitmap bitmap;
+    ImageButton profileImageButton;
+
+    Boolean boolCam;
+    Boolean boolGal;
 
     Intent intent;
 
@@ -37,6 +59,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings);
 
+        boolCam = false;
+        boolGal = false;
+
         Toolbar toolbar = findViewById(R.id.sToolbar);
         toolbar.setTitle("Settings");
 
@@ -47,6 +72,10 @@ public class SettingsActivity extends AppCompatActivity {
         ImageButton ukButton = findViewById(R.id.ukButton);
 
         intent = new Intent(this, MainActivity.class);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(SettingsActivity.this, new String[] {Manifest.permission.CAMERA}, 100);
+        }
 
         turkeyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +142,22 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.putExtra(today_page.CURRENCY, currency);
             }
         });
+
+        profileImageButton = findViewById(R.id.profileImageButton);
+        profileImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickPick(v);
+            }
+        });
+
+        Button saveButton = findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadPick(v);
+            }
+        });
     }
 
     public void setLocale(final String language) {
@@ -154,6 +199,76 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onClickPick(View view) {
+        final CharSequence[] options = {"Camera", "Gallery", "Cancel"};
+
+        AlertDialog.Builder pickDialog = new AlertDialog.Builder(this);
+        pickDialog.setTitle("Choose your profile picture");
+
+        pickDialog.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                if (options[item].equals("Camera")) {
+                    boolCam = true;
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, 100);
+                } else if (options[item].equals("Gallery")) {
+                    boolGal = true;
+                    Intent pickPhoto = new Intent();
+                    pickPhoto.setType("image/*");
+                    pickPhoto.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(pickPhoto, "Select Picture"), 100);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        pickDialog.show();
+    }
+
+    public void loadPick(View view) {
+        if (getIntent().hasExtra("profileImage")) {
+            bitmap = BitmapFactory.decodeByteArray(getIntent().getByteArrayExtra("profileImage"), 0, getIntent().getByteArrayExtra("profileImage").length);
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+        intent.putExtra("profileImage", byteArrayOutputStream.toByteArray());
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Intent intentImage = new Intent(SettingsActivity.this, MainActivity.class);
+
+        if (resultCode == -1 && boolCam) {
+            uri = data.getData();
+            bitmap = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
+            profileImageButton.setImageBitmap(bitmap);
+            intentImage.putExtra("profileImage", byteArrayOutputStream.toByteArray());
+
+
+        } else if (resultCode == -1 && boolGal) {
+            if (data != null) {
+                try {
+                    uri = data.getData();
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 90,byteArrayOutputStream);
+                    profileImageButton.setImageBitmap(bitmap);
+                    intentImage.putExtra("profileImage", byteArrayOutputStream.toByteArray());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
     }
 
 

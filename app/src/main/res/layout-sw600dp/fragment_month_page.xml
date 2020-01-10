@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#212121"
+    tools:context=".month_page">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayoutInMonthPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#363636"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="top"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/mToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#363636"
+                android:minHeight="40dp"
+                android:theme="?attr/actionBarTheme"
+                app:buttonGravity="top|bottom"
+                app:layout_collapseMode="pin"
+                app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxButtonHeight="40dp"
+                app:menu="@menu/custom_toolbar"
+                app:titleTextAppearance="@style/toolbarTitleSize"
+                app:titleTextColor="#FFFFFF" />
+
+            <LinearLayout
+                android:id="@+id/savingLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/savingEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="3"
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:hint="@string/deposit_edit_text"
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="numberDecimal"
+                    android:textColor="#DFFFFFFF"
+                    android:textColorHighlight="#DFFFFFFF"
+                    android:textColorHint="#DFFFFFFF"
+                    android:textColorLink="#DFFFFFFF"
+                    android:textSize="16sp"
+                    android:theme="@style/CustomEditTextStyle"
+                    tools:layout_editor_absoluteX="15dp"
+                    tools:layout_editor_absoluteY="16dp" />
+
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/addSavingImageButton"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/budgetLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="130dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/budgetEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="3"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans_semibold"
+                    android:hint="@string/budget_edit_text"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:textColor="#DFFFFFFF"
+                    android:textColorHighlight="#DFFFFFFF"
+                    android:textColorHint="#DFFFFFFF"
+                    android:textColorLink="#DFFFFFFF"
+                    android:textSize="16sp"
+                    android:theme="@style/CustomEditTextStyle"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="16dp" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/budgetImageButton"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    app:srcCompat="@drawable/ic_add_black_24dp" />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="60dp"
+        android:fillViewport="true"
+        android:orientation="vertical"
+        android:scrollbarSize="1dp"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mToolbar"
+        tools:verticalScrollbarPosition="left">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/month_page_linear_layout_custom_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:scrollbarSize="1dp"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/listViewLinearLayout"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:minWidth="340dp"
+                        android:orientation="vertical"
+                        android:scrollbars="horizontal">
+
+                        <ListView
+                            android:id="@+id/paymentListInDetailPage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:background="@drawable/custom_listview_border"
+                            android:nestedScrollingEnabled="true"
+                            android:scrollbars="none">
+
+                        </ListView>
+                    </LinearLayout>
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/barchart"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="25dp"
+                        android:layout_weight="1"
+                        android:minWidth="800dp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/detailsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/nunito_sans_semibold"
+                android:gravity="center"
+                android:text="@string/detail_text"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/custom_llayout_border"
+                android:divider="@drawable/details_linearlayout_custom_divider"
+                android:orientation="vertical"
+                android:showDividers="middle">
+
+                <LinearLayout
+                    android:id="@+id/totalPaymentTextViewlinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/totalPaymentText"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="@string/total_payment_monthly"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="662dp" />
+
+                    <TextView
+                        android:id="@+id/totalPaymentInMonthTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical|end"
+                        android:text="total payment"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="229dp"
+                        tools:layout_editor_absoluteY="661dp" />
+
+                    <TextView
+                        android:id="@+id/currencyOfMTP"
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:gravity="start|center_vertical"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/totalPaymentOnMonthDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/savingTextLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/savingText"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="@string/entered_deposit"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="18dp"
+                        tools:layout_editor_absoluteY="558dp" />
+
+                    <TextView
+                        android:id="@+id/savingTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical|end"
+                        android:text="entered saving"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="199dp"
+                        tools:layout_editor_absoluteY="559dp" />
+
+                    <TextView
+                        android:id="@+id/currencyOfED"
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:gravity="start|center_vertical"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/depositDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/budgetTextViewLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/budgetText"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="@string/total_budget"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/budgetTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical|end"
+                        android:text="total budget"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/currencyOfTB"
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:gravity="start|center_vertical"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/budgetDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/balanceTextViewLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/balanceText"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical"
+                        android:text="@string/balance"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="16dp"
+                        tools:layout_editor_absoluteY="696dp" />
+
+                    <TextView
+                        android:id="@+id/balanceTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/nunito_sans_semibold"
+                        android:gravity="center_vertical|end"
+                        android:text="balance"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="229dp"
+                        tools:layout_editor_absoluteY="695dp" />
+
+                    <TextView
+                        android:id="@+id/currencyOfB"
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:gravity="start|center_vertical"
+                        android:textColor="#FAFAFA"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/balanceDeleteImageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

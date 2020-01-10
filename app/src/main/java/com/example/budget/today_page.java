@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -75,12 +76,25 @@ public class today_page extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_today_page, container, false);
 
+        AlertDialog.Builder infoDialog = new AlertDialog.Builder(getActivity());
+        infoDialog.setMessage("Tablet version was created, you can test. "
+                + "scrollable toolbar is in profile_page. "
+                + "collapsing toolbar is in month_page.");
+        infoDialog.setNegativeButton(getString(R.string.Close), new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        infoDialog.show();
+
         //when keyboard is opened, linearlayout that consist edittext and floatactionbutton goes to up and be visible.
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         //Toolbar
         Toolbar toolbar = view.findViewById(R.id.tToolbar);
         toolbar.setTitle("bud-get");
+        toolbar.setTitleTextColor(Color.parseColor("#AEEA00"));
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         //Database
@@ -135,7 +149,6 @@ public class today_page extends Fragment {
 
         //if paymentlist is empty, textviews that called "harcama" and "tarih" are invisible and paymentlist backgroundcolor is same with main screen backgrouncolor.
         if(paymentListOfTodayPage.isEmpty()) {
-            LinearLayout listViewNamelinearLayout = view.findViewById(R.id.listViewNamelinearLayoutInTodayPage);
             paymentListView.setBackgroundColor(212121);
         }
 
@@ -180,9 +193,9 @@ public class today_page extends Fragment {
            try {
                 differenceOfDates = Integer.valueOf(todaysDateFormatWithHour.format(todaysDate).substring(0,2)) - Integer.valueOf(monthlypaymentList.get(0).getMpaymentDate().substring(0,2));
             } catch (NullPointerException e) {
-                differenceOfDates = 0;
+                differenceOfDates = 1;
             } catch (IndexOutOfBoundsException e) {
-                differenceOfDates = 0;
+                differenceOfDates = 1;
             }
         } else {
             /*
@@ -286,14 +299,12 @@ public class today_page extends Fragment {
         //app is recreated when the first element is added for access to wanted display in today_page, listViewNamelinearLayout will visible
         //if we do not use if statement, the app is recreated when each element adding and this causes bad using.
         if(paymentListOfTodayPage.size() < 2) {
-
-            /**try it**/
             customAdapter.notifyDataSetChanged();
             //list is rebuilt
             new asyncTask().execute();
             paymentListOfTodayPage = (ArrayList<PaymentDataOfTodayPage>) budgetDatabaseHelper.getAllTodayPagePaymentData();
-
-
+            //
+            paymentListView.setBackgroundResource(R.drawable.custom_listview_border);
         }
     }
 
@@ -527,7 +538,6 @@ public class today_page extends Fragment {
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                             String totalPaymentAfterDeletingAnyPayment = todaysTotalPaymentTextView.getText().toString();
                             try {
                                 if ((Integer.valueOf(totalPaymentAfterDeletingAnyPayment) - Integer.valueOf(paymentListOfTodayPage.get(position).getPayment())) == 0) {
@@ -547,8 +557,12 @@ public class today_page extends Fragment {
                             //Database of month_page is updated
                             budgetDatabaseHelper.deleteRowOfMonthPagePaymentTable(monthlypaymentList.get(0).getMpayment(), monthlypaymentList.get(0).getMpaymentDate());
                             monthlypaymentList.remove(0);
-                            monthlypaymentList.add(0, new PaymentDataOfMonthPage(todaysTotalPaymentTextView.getText().toString(),paymentListOfTodayPage.get(0).getPaymentDate().substring(0,10)));
-                            budgetDatabaseHelper.insertPaymentOfMonthPage(todaysTotalPaymentTextView.getText().toString(), paymentListOfTodayPage.get(0).getPaymentDate().substring(0,10));
+                            try {
+                                monthlypaymentList.add(0, new PaymentDataOfMonthPage(todaysTotalPaymentTextView.getText().toString(),paymentListOfTodayPage.get(0).getPaymentDate().substring(0,10)));
+                                budgetDatabaseHelper.insertPaymentOfMonthPage(todaysTotalPaymentTextView.getText().toString(), paymentListOfTodayPage.get(0).getPaymentDate().substring(0,10));
+                            } catch (IndexOutOfBoundsException e) {
+                                System.out.println("list is empty");
+                            }
 
                             // Notifies the attached observers that the underlying data has been changed
                             // and any View reflecting the data set should refresh itself.

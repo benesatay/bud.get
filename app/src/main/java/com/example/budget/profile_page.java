@@ -3,19 +3,28 @@ package com.example.budget;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,6 +39,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
@@ -39,23 +50,35 @@ public class profile_page extends Fragment {
         // Required empty public constructor
     }
 
+    ImageView profileImageView;
     ArrayList<PaymentDataOfProfilePage> profilePaymentList;
-
     TextView nameTextViewInProfileToolbar;
     TextView creationDateTextView;
-
     PieChart pieChart;
-
-    public TextView accountActivitiesText;
-
-    public String languageTestText;
-
+    TextView accountActivitiesText;
+    String languageTestText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_page, container, false);
+
+        profileImageView = view.findViewById(R.id.profileImageView);
+        if (getActivity().getIntent().hasExtra("profileImage")) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(getActivity().getIntent().getByteArrayExtra("profileImage"), 0, getActivity().getIntent().getByteArrayExtra("profileImage").length);
+            profileImageView.setImageBitmap(bitmap);
+        }
+
+        AlertDialog.Builder infoDialog = new AlertDialog.Builder(getActivity());
+        infoDialog.setMessage("Profile Photo is set in Settings, you must accept camera access permission.");
+        infoDialog.setNegativeButton(getString(R.string.Close), new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        infoDialog.show();
 
         pieChart = view.findViewById(R.id.piechart);
 
@@ -174,6 +197,7 @@ public class profile_page extends Fragment {
                 deleteDialog.show();
             }
         });
+
 
         allTimeTotalSavingImageButton.setOnClickListener(new View.OnClickListener() {
             @Override

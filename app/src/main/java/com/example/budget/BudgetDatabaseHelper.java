@@ -22,13 +22,8 @@ public class BudgetDatabaseHelper extends SQLiteOpenHelper {
         super(context, "budget", null, 21);
     }
 
-
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
-
-
 
         String sqlPaymentinToday = "CREATE TABLE paymenttable ("
                 + "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
