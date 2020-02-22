@@ -3,5 +3,56 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="colorPrimaryForLightTheme">#AEEA00</color>
+    <color name="colorPrimaryDarkForLightTheme">#79B700</color>
+    <color name="colorAccentForLightTheme">#E4FF54</color>
+
+    <color name="toolbarColorLightTheme">#AEEA00</color>
+    <color name="toolbarColorDarkTheme">#363636</color>
+
+
+
     <color name="colorOfActionBar">#212121</color>
+
+    <!--BACKGROUND-->
+    <color name="backgroundColorForDarkTheme">#212121</color>
+    <color name="backgroundColorForLightTheme">#FFFFFF</color>
+
+    <!--BOTTOM BAR-->
+    <color name="bottomBarColorForLightTheme">#E4FF54</color>
+    <color name="bottomBarCheckedColorForLightTheme">#006064</color>
+    <color name="bottomBarNonCheckedColorForLightTheme">#707070</color>
+
+    <color name="bottomBarColorForDarkTheme">#363636</color>
+    <color name="bottomBarCheckedColorForDarkTheme">#84C9FB</color>
+    <color name="bottomBarNonCheckedColorForDarkTheme">#707070</color>
+
+    <!--LISTVIEW BACKGROUND-->
+    <color name="listviewBackgroundColorForLightTheme">#FAFAFA</color>
+    <color name="listItemBorderColorForLightTheme">#FAFAFA</color>
+    <color name="listviewBackgroundColorForDarkTheme">#212121</color>
+    <color name="listItemBorderColorForDarkTheme">#424242</color>
+
+
+
+    <!--LISTVIEW ITEMS -->
+    <color name="listViewMoreButtonForLightTheme">#8A000000</color>
+    <color name="listViewDividerColorForLightTheme">#424242</color>
+
+    <color name="listViewMoreButtonForDarkTheme">#BDBDBD</color>
+    <color name="listViewDividerColorForDarkTheme">#424242</color>
+    <!--TOOLBAR BUTTON-->
+    <color name="toolbarButtonColorForLightTheme">#006064</color>
+    <color name="toolbarButtonColorForDarkTheme">#BDBDBD</color>
+
+    <!--TEXT COLOR-->
+    <color name="textColorOfToolbarForLightTheme">#DE000000</color>
+    <color name="textColorForLightTheme">#DE000000</color>
+    <color name="secondaryTextColorLightTheme">#8A000000</color>
+
+    <color name="textColorOfToolbarForDarkTheme">#AEEA00</color>
+    <color name="textColorForDarkTheme">#DEFFFFFF</color>
+    <color name="secondaryTextColorDarkTheme">#61FFFFFF</color>
+
 </resources>

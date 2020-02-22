@@ -1,5 +1,6 @@
 package com.example.budget;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,8 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -44,6 +47,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+@SuppressLint("SetJavaScriptEnabled")
 public class profile_page extends Fragment {
 
     public profile_page() {
@@ -57,6 +61,7 @@ public class profile_page extends Fragment {
     PieChart pieChart;
     TextView accountActivitiesText;
     String languageTestText;
+    WebView webView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -359,5 +364,4 @@ public class profile_page extends Fragment {
             }
         }
     }
-
 }

@@ -76,25 +76,13 @@ public class today_page extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_today_page, container, false);
 
-        AlertDialog.Builder infoDialog = new AlertDialog.Builder(getActivity());
-        infoDialog.setMessage("Tablet version was created, you can test. "
-                + "scrollable toolbar is in profile_page. "
-                + "collapsing toolbar is in month_page.");
-        infoDialog.setNegativeButton(getString(R.string.Close), new AlertDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        infoDialog.show();
-
         //when keyboard is opened, linearlayout that consist edittext and floatactionbutton goes to up and be visible.
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         //Toolbar
         Toolbar toolbar = view.findViewById(R.id.tToolbar);
         toolbar.setTitle("bud-get");
-        toolbar.setTitleTextColor(Color.parseColor("#AEEA00"));
+        //toolbar.setTitleTextColor(Color.parseColor("#AEEA00"));
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         //Database

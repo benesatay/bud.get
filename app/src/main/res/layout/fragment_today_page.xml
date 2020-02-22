@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
- xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayoutInMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#212121"
     tools:context=".today_page">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <LinearLayout
@@ -29,12 +27,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:background="#363636"
+                android:background="?attr/toolbarColor"
                 android:minHeight="40dp"
                 app:buttonGravity="top|bottom"
                 app:maxButtonHeight="40dp"
                 app:menu="@menu/custom_toolbar"
-                app:titleTextAppearance="@style/toolbarTitleSize" />
+                app:titleTextAppearance="@style/toolbarTitleSize"
+                app:titleTextColor="?attr/toolbarTextColor" />
 
 
             <LinearLayout
@@ -54,10 +53,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:background="@drawable/custom_listview_border"
+                    android:divider="@null"
                     android:minHeight="400dp"
-                    android:scrollbarSize="4dp"
-                    android:nestedScrollingEnabled="true">
+                    android:nestedScrollingEnabled="true"
+                    android:scrollbarSize="4dp">
 
                 </ListView>
 
@@ -84,6 +83,7 @@
                     android:ems="12"
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:hint="@string/payment_edit_text"
+                    android:imeOptions="actionDone"
                     android:importantForAutofill="no"
                     android:inputType="number"
                     android:shadowColor="#BDBDBD"
@@ -93,8 +93,7 @@
                     android:textColorLink="#BDBDBD"
                     android:textCursorDrawable="@android:color/background_dark"
                     android:textSize="16sp"
-                    android:theme="@style/CustomEditTextStyle"
-                    android:imeOptions="actionDone"/>
+                    android:theme="@style/CustomEditTextStyle" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/addPaymentFAB"
@@ -108,7 +107,7 @@
                     android:clickable="true"
                     android:src="@drawable/ic_add_black_24dp"
                     android:tint="#00030000"
-                    app:backgroundTint="#AEEA00" />
+                    app:backgroundTint="@color/colorPrimaryForLightTheme" />
 
             </LinearLayout>
 
@@ -120,7 +119,6 @@
                 android:fontFamily="@font/nunito_sans_semibold"
                 android:gravity="center"
                 android:text="@string/detail_text"
-                android:textColor="#FFFFFF"
                 android:textSize="18sp" />
 
             <LinearLayout
@@ -145,7 +143,6 @@
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:gravity="center_vertical"
                     android:text="@string/total_payment_daily"
-                    android:textColor="#FAFAFA"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="16dp"
@@ -159,7 +156,6 @@
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:gravity="center_vertical|end"
                     android:text="dailypayment"
-                    android:textColor="#FAFAFA"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     tools:layout_editor_absoluteX="229dp"

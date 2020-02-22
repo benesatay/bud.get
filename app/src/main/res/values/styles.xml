@@ -1,12 +1,69 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryForLightTheme</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkForLightTheme</item>
+        <item name="colorAccent">@color/colorOfActionBar</item>
+
+        <!--Toolbar Color -->
+        <item name="toolbarColor">@color/toolbarColorLightTheme</item>
+
+        <!--Background Color -->
+        <item name="backgroundColor">@color/backgroundColorForLightTheme</item>
+
+        <item name="textColor">@color/textColorForLightTheme</item>
+        <item name="secondaryTextColor">@color/secondaryTextColorLightTheme</item>
+        <item name="toolbarTextColor">@color/textColorOfToolbarForLightTheme</item>
+
+        <!--ButtomBar Color -->
+        <item name="bottomBarColor">@color/bottomBarColorForLightTheme</item>
+        <item name="bottomBarCheckedColor">@color/bottomBarCheckedColorForLightTheme</item>
+        <item name="bottomBarNonCheckedColor">@color/bottomBarNonCheckedColorForLightTheme</item>
+
+        <!--Listview Color -->
+        <item name="listViewBackgroundColor">@color/listviewBackgroundColorForLightTheme</item>
+        <!--Listview Item Color -->
+        <item name="listViewButtonColor">@color/listViewMoreButtonForLightTheme</item>
+        <item name="listViewDividerColor">@color/listViewDividerColorForLightTheme</item>
+        <item name="listItemBorderColor">@color/listItemBorderColorForLightTheme</item>
+
+        <!--Toolbar Button -->
+        <item name="toolbarButtonColor">@color/toolbarButtonColorForLightTheme</item>
+
+    </style>
+
+    <!--DARK THEME-->
+    <style name="AppThemeDark" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorOfActionBar</item>
         <item name="colorPrimaryDark">@color/colorOfActionBar</item>
         <item name="colorAccent">@color/colorOfActionBar</item>
+        <item name="backgroundColor">@color/backgroundColorForDarkTheme</item>
+
+        <!--Toolbar Color -->
+        <item name="toolbarColor">@color/toolbarColorDarkTheme</item>
+
+        <!--Toolbar Button -->
+        <item name="toolbarButtonColor">@color/toolbarButtonColorForDarkTheme</item>
+        <!--Listview Color -->
+        <item name="listViewBackgroundColor">@color/listviewBackgroundColorForDarkTheme</item>
+        <!--Listview Item Color -->
+        <item name="listViewButtonColor">@color/listViewMoreButtonForDarkTheme</item>
+        <item name="listViewDividerColor">@color/listViewDividerColorForDarkTheme</item>
+        <item name="listItemBorderColor">@color/listItemBorderColorForDarkTheme</item>
+
+        <!--ButtomBar Color -->
+        <item name="bottomBarColor">@color/bottomBarColorForDarkTheme</item>
+        <item name="bottomBarCheckedColor">@color/bottomBarCheckedColorForDarkTheme</item>
+        <item name="bottomBarNonCheckedColor">@color/bottomBarNonCheckedColorForDarkTheme</item>
+
+        <item name="textColor">@color/textColorForDarkTheme</item>
+        <item name="secondaryTextColor">@color/secondaryTextColorDarkTheme</item>
+        <item name="toolbarTextColor">@color/textColorOfToolbarForDarkTheme</item>
+
     </style>
+
 
     <style name="CustomEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="colorControlNormal">#131313</item>
@@ -27,7 +84,7 @@
     <style name="sToolbarTitleSize" parent="@style/Base.TextAppearance.AppCompat.Title">
         <item name="android:textSize">18sp</item>
         <item name="android:height">35dp</item>
-
     </style>
+
 
 </resources>

@@ -1,28 +1,20 @@
 package com.example.budget;
 
-import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ShareActionProvider;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ActionProvider;
-import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -31,19 +23,33 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     public static final String LANGUAGE = "lang";
-
+    public static final String THEME = "theme";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**
+        AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_YES);
+         */
+
         super.onCreate(savedInstanceState);
+
+        String themeState = getIntent().getStringExtra(THEME);
+        if(themeState == "AppThemeDark") {
+            setTheme(R.style.AppThemeDark);
+        } else {
+            setTheme(R.style.AppThemeLight);
+        }
+
+
         setContentView(R.layout.activity_main);
 
         setLocale();
+
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomnav);
@@ -147,7 +153,4 @@ public class MainActivity extends AppCompatActivity {
                     getBaseContext().getResources().getDisplayMetrics());
         }
     }
-
-
-
 }

@@ -26,18 +26,20 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Locale;
-import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -54,10 +56,39 @@ public class SettingsActivity extends AppCompatActivity {
 
     public String currency;
 
+    public Switch themeSwitch;
+    String themeState;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        final Gson gson = new Gson();
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+
+        String themeStateFromJson = sharedPref.getString("themeStateToJson", null);
+        Type typeThemeState = new TypeToken<String>() {}.getType();
+        String themeStateString;
+        try {
+            themeStateString = gson.fromJson(themeStateFromJson, typeThemeState);
+        } catch (NullPointerException e) {
+            themeStateString = "AppThemeLight";
+        }
+
+
+        if(themeStateString == "AppThemeDark") {
+            setTheme(R.style.AppThemeDark);
+        } else {
+            setTheme(R.style.AppThemeLight);
+        }
+
+
+
         this.setContentView(R.layout.activity_settings);
+
+
 
         boolCam = false;
         boolGal = false;
@@ -156,6 +187,28 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadPick(v);
+            }
+        });
+
+        themeSwitch = findViewById(R.id.themeSwitch);
+        themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked) {
+                    themeState = "AppThemeDark";
+                    System.out.println(themeState);
+                } else {
+                    themeState = "AppThemeLight";
+                    System.out.println(themeState);
+                }
+                intent.putExtra(MainActivity.THEME, themeState);
+
+                String themeStateToJson = gson.toJson(themeState);
+                editor.putString("themeStateToJson", themeStateToJson);
+                editor.commit();
+
+
             }
         });
     }
@@ -267,9 +320,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         }
-
-
     }
-
 
 }

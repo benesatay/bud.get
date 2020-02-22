@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="backgroundColor" format="color"/>
+
+    <attr name="toolbarColor" format="color"/>
+
+    <attr name="toolbarButtonColor" format="color"/>
+
+
+
+
+    <attr name="listViewBackgroundColor" format="color"/>
+    <attr name="listItemBorderColor" format="color"/>
+
+    <attr name="listViewButtonColor" format="color"/>
+    <attr name="listViewDividerColor" format="color"/>
+
+
+    <attr name="textColor" format="color"/>
+    <attr name="secondaryTextColor" format="color"/>
+    <attr name="toolbarTextColor" format="color"/>
+
+
+    <attr name="bottomBarColor" format="color"/>
+    <attr name="bottomBarCheckedColor" format="color"/>
+    <attr name="bottomBarNonCheckedColor" format="color"/>
+</resources>

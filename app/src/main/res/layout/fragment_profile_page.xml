@@ -264,7 +264,6 @@
 
             </LinearLayout>
 
-
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/piechart"
                 android:layout_width="match_parent"
@@ -274,7 +273,9 @@
                 android:layout_marginBottom="60dp"
                 android:layout_weight="1"
                 android:background="@null"
-                android:minHeight="400dp" />
+                android:minHeight="400dp" >
+
+            </com.github.mikephil.charting.charts.PieChart>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -5,14 +5,14 @@
     android:id="@+id/SettingsConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#212121"
+    android:background="?attr/backgroundColor"
     tools:context=".SettingsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/sToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#363636"
+        android:background="?attr/toolbarColor"
         android:minHeight="40dp"
         android:theme="?attr/actionBarTheme"
         app:buttonGravity="top|bottom"
@@ -25,6 +25,29 @@
         app:titleTextColor="#FFFFFF" />
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sToolbar">
+
+        <Switch
+            android:id="@+id/themeSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:text="Theme"
+            android:textColor="?attr/textColor"
+            android:thumb="@drawable/ic_brightness_high_black_24dp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,7 +57,7 @@
         app:layout_constraintBottom_toTopOf="@+id/listViewNamelinearLayoutInTodayPage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <ImageButton
             android:id="@+id/profileImageButton"
@@ -43,7 +66,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:background="@null"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@drawable/ic_account_circle_black_50dp" />
 
         <TextView
             android:id="@+id/usernameTextView"
@@ -53,7 +76,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="username"
-            android:textColor="#BDBDBD"
+            android:textColor="?attr/textColor"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -71,11 +94,10 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="70dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
@@ -88,7 +110,7 @@
             android:fontFamily="@font/nunito_sans_bold"
             android:gravity="center_vertical"
             android:text="@string/Language"
-            android:textColor="#BDBDBD"
+            android:textColor="?attr/textColor"
             android:textSize="20sp" />
 
         <ImageButton
@@ -113,10 +135,8 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="399dp"
+        android:layout_marginTop="70dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listViewNamelinearLayoutInTodayPage">
@@ -130,7 +150,7 @@
             android:fontFamily="@font/nunito_sans_bold"
             android:gravity="center_vertical"
             android:text="@string/Currency_Type"
-            android:textColor="#BDBDBD"
+            android:textColor="?attr/textColor"
             android:textSize="20sp" />
 
         <Button
@@ -140,7 +160,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:text="₺"
-            android:textColor="#BDBDBD"
+            android:textColor="?attr/textColor"
             android:textSize="20sp" />
 
         <Button
@@ -150,7 +170,7 @@
             android:layout_weight="1"
             android:background="@null"
             android:text="$"
-            android:textColor="#BDBDBD"
+            android:textColor="?attr/textColor"
             android:textSize="20sp" />
 
         <Button
@@ -161,8 +181,9 @@
             android:layout_weight="1"
             android:background="@null"
             android:text="€"
-            android:textColor="#BDBDBD"
+            android:textColor="?attr/textColor"
             android:textSize="20sp" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
